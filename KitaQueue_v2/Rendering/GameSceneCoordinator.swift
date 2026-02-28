@@ -174,6 +174,49 @@ final class GameSceneCoordinator {
         }
 
         PersistenceService.shared.saveProgression(progression)
+
+        // Update daily pack + quests
+        updateDailyProgress(won: true, banked: bankedCount, stars: starRating, misbanked: false)
+    }
+
+    // MARK: - Daily Progress
+
+    func updateDailyProgress(won: Bool, banked: Int, stars: Int, misbanked: Bool) {
+        var daily = PersistenceService.shared.loadDailyState()
+        daily.ensureCurrent()
+
+        // Pack progress: increment on win (max 3)
+        if won && daily.packProgress < 3 {
+            daily.packProgress += 1
+
+            // Pack completion reward: +1 Technique Token
+            if daily.packComplete {
+                var progression = PersistenceService.shared.loadProgression()
+                progression.totalTokens += 1
+                PersistenceService.shared.saveProgression(progression)
+            }
+        }
+
+        // Quest progress
+        daily.updateQuestProgress(
+            banked: banked,
+            won: won,
+            stars: stars,
+            misbanked: misbanked,
+            operatorsPlaced: operatorsUsed
+        )
+
+        // Award completed quest tokens
+        let newlyCompletedTokens = daily.quests
+            .filter { $0.isCompleted && $0.currentCount == $0.targetCount }
+            .reduce(0) { $0 + $1.rewardTokens }
+        if newlyCompletedTokens > 0 {
+            var progression = PersistenceService.shared.loadProgression()
+            progression.totalTokens += newlyCompletedTokens
+            PersistenceService.shared.saveProgression(progression)
+        }
+
+        PersistenceService.shared.saveDailyState(daily)
     }
 
     // MARK: - Touch -> Operator Placement

@@ -69,6 +69,7 @@
 		B33F08240789ED20D7EC1142 /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94EB9DE96CA5DFAA9EA4512 /* ShopView.swift */; };
 		B4399FF484AB614EB2CB6709 /* DailyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4CA8AB2A53309D0945BF882 /* DailyView.swift */; };
 		B9EAF433AE0B71173E607488 /* level_002.json in Resources */ = {isa = PBXBuildFile; fileRef = 02AB0155E79F8F14212282CA /* level_002.json */; };
+		BA52B694BCE0491945B59B74 /* QuestRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EED85E77B166B8DD26E873 /* QuestRowView.swift */; };
 		C19B791977FCDD766BF4450C /* PauseMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B7E78710C23AC3D91620F7 /* PauseMenuView.swift */; };
 		C5E7F02D579E7B34AD477CFD /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD35CA77AA99F4117B99EEC1 /* GameScene.swift */; };
 		D348ECC2FCADD2BE37CDBBA5 /* WinOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6F2782DBBE55559A80F7F1 /* WinOverlayView.swift */; };
@@ -131,6 +132,7 @@
 		78603F7D5A4C3DBE387E31CB /* level_004.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = level_004.json; sourceTree = "<group>"; };
 		7D4096F4EC4C0BEB7F579250 /* InteractionProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionProcessor.swift; sourceTree = "<group>"; };
 		83AF6C9F812AB3AF43EF7B29 /* NinjaNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NinjaNode.swift; sourceTree = "<group>"; };
+		84EED85E77B166B8DD26E873 /* QuestRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestRowView.swift; sourceTree = "<group>"; };
 		86A55DBCED0B248C42EF1650 /* KitaQueue_v2Tests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = KitaQueue_v2Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D4E5AB1CA21499603DD5863 /* KitaQueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KitaQueueTests.swift; sourceTree = "<group>"; };
 		8DFA7317D7C0F7ABE4CB6903 /* StarCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarCalculator.swift; sourceTree = "<group>"; };
@@ -435,6 +437,7 @@
 			isa = PBXGroup;
 			children = (
 				E4CA8AB2A53309D0945BF882 /* DailyView.swift */,
+				84EED85E77B166B8DD26E873 /* QuestRowView.swift */,
 			);
 			path = Daily;
 			sourceTree = "<group>";
@@ -617,6 +620,7 @@
 				825112B425F0264713FFF53B /* PlayHubView.swift in Sources */,
 				16084B72C9B86603E5065D44 /* PlayerInput.swift in Sources */,
 				A09CE8DEE29D850B9B14C8C7 /* PlayerProgression.swift in Sources */,
+				BA52B694BCE0491945B59B74 /* QuestRowView.swift in Sources */,
 				765C4EADB4A610406F07A488 /* RootTabView.swift in Sources */,
 				19075BE9AA7CA37A78F92EC1 /* SettingsView.swift in Sources */,
 				B33F08240789ED20D7EC1142 /* ShopView.swift in Sources */,
