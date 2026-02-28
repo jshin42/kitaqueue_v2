@@ -1,0 +1,48 @@
+{
+  "id": 8,
+  "waves": [
+    [
+      {"lane": 0, "color": "red"},
+      {"lane": 1, "color": "green"},
+      {"lane": 2, "color": "red"},
+      {"lane": 3, "color": "blue"}
+    ],
+    [
+      {"lane": 0, "color": "red"},
+      {"lane": 1, "color": "green"},
+      {"lane": 2, "color": "green"},
+      {"lane": 3, "color": "blue"}
+    ],
+    [
+      {"lane": 0, "color": "red"},
+      {"lane": 1, "color": "red"},
+      {"lane": 2, "color": "red"},
+      {"lane": 3, "color": "blue"}
+    ],
+    [
+      {"lane": 0, "color": "red"},
+      {"lane": 1, "color": "green"},
+      {"lane": 2, "color": "green"},
+      {"lane": 3, "color": "blue"}
+    ],
+    [
+      {"lane": 0, "color": "red"},
+      {"lane": 1, "color": "green"},
+      {"lane": 2, "color": "red"},
+      {"lane": 3, "color": "blue"}
+    ],
+    [
+      {"lane": 0, "color": "red"},
+      {"lane": 1, "color": "red"},
+      {"lane": 2, "color": "red"},
+      {"lane": 3, "color": "blue"}
+    ]
+  ],
+  "gates": [
+    {"type": "paint", "lane": 2, "row": 5, "fromColor": "red", "toColor": "yellow"},
+    {"type": "color", "lane": 2, "row": 8, "allowedColor": "yellow"},
+    {"type": "color", "lane": 1, "row": 7, "allowedColor": "green"}
+  ],
+  "threeStarMaxOps": 6,
+  "twoStarMaxOps": 8
+}

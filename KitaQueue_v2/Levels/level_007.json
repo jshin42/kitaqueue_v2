@@ -1,0 +1,47 @@
+{
+  "id": 7,
+  "waves": [
+    [
+      {"lane": 0, "color": "red"},
+      {"lane": 1, "color": "green"},
+      {"lane": 2, "color": "yellow"},
+      {"lane": 3, "color": "blue"}
+    ],
+    [
+      {"lane": 0, "color": "red"},
+      {"lane": 1, "color": "green"},
+      {"lane": 2, "color": "yellow"},
+      {"lane": 3, "color": "blue"}
+    ],
+    [
+      {"lane": 0, "color": "red"},
+      {"lane": 1, "color": "green"},
+      {"lane": 2, "color": "yellow"},
+      {"lane": 3, "color": "yellow"}
+    ],
+    [
+      {"lane": 0, "color": "red"},
+      {"lane": 1, "color": "green"},
+      {"lane": 2, "color": "yellow"},
+      {"lane": 3, "color": "blue"}
+    ],
+    [
+      {"lane": 0, "color": "red"},
+      {"lane": 1, "color": "green"},
+      {"lane": 2, "color": "yellow"},
+      {"lane": 3, "color": "yellow"}
+    ],
+    [
+      {"lane": 0, "color": "red"},
+      {"lane": 1, "color": "green"},
+      {"lane": 2, "color": "yellow"},
+      {"lane": 3, "color": "blue"}
+    ]
+  ],
+  "gates": [
+    {"type": "toggle", "lane": 1, "row": 6, "colorCycle": ["green", "red"], "cycleEveryNSpawns": 2},
+    {"type": "color", "lane": 3, "row": 8, "allowedColor": "blue"}
+  ],
+  "threeStarMaxOps": 6,
+  "twoStarMaxOps": 8
+}

@@ -237,6 +237,9 @@ final class GameSceneCoordinator {
 
         case .tutorialPaused:
             gamePhase = .tutorialPaused
+            if let text = simulation?.levelData.tutorialConfig?.overlayText {
+                scene?.showTutorialOverlay(text: text)
+            }
 
         case .operatorPlaced, .operatorRemoved:
             break

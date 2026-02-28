@@ -367,6 +367,20 @@ final class GameScene: SKScene {
         }
     }
 
+    // MARK: - Tutorial Overlay
+
+    func showTutorialOverlay(text: String) {
+        let overlay = TutorialOverlayNode(text: text, sceneSize: size) { [weak self] in
+            self?.coordinator?.resumeFromTutorial()
+        }
+        overlayLayer.addChild(overlay)
+    }
+
+    func showEndCard(text: String, onDismiss: @escaping () -> Void) {
+        let overlay = TutorialOverlayNode(text: text, sceneSize: size, onDismiss: onDismiss)
+        overlayLayer.addChild(overlay)
+    }
+
     // MARK: - VFX
 
     func showFailFlash() {
