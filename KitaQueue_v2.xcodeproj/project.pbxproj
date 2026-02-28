@@ -9,8 +9,18 @@
 /* Begin PBXBuildFile section */
 		129FF894D449D9755FB70625 /* Gameplay.atlas in Resources */ = {isa = PBXBuildFile; fileRef = B747D9FE131179F522E9831E /* Gameplay.atlas */; };
 		12DC8B004121003C21B6F83C /* KitaQueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D4E5AB1CA21499603DD5863 /* KitaQueueTests.swift */; };
+		148C4AC110BF9EA1AEC5B8B4 /* DailyStateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB97B1E060C1896E6BD20DB4 /* DailyStateModel.swift */; };
+		19075BE9AA7CA37A78F92EC1 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ECED8188A02303A361E595D /* SettingsView.swift */; };
+		1C61A3AC7AB72605778AFECE /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43C79B809E554BC651CF704 /* UserSettings.swift */; };
+		3D0BBDADD6395B28A9B1EFDE /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D3269B3265E420CCAADE2D /* AppState.swift */; };
 		55D5DCD7E3880970AA71FF3D /* Shell.atlas in Resources */ = {isa = PBXBuildFile; fileRef = FEAA34B2BA98856DE8230922 /* Shell.atlas */; };
+		765C4EADB4A610406F07A488 /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509B0B116F40917B4C5B26C8 /* RootTabView.swift */; };
+		825112B425F0264713FFF53B /* PlayHubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4303F9680F63D8A5104B739 /* PlayHubView.swift */; };
+		A09CE8DEE29D850B9B14C8C7 /* PlayerProgression.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D8D43D78EE02C6C5415D8 /* PlayerProgression.swift */; };
+		B33F08240789ED20D7EC1142 /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94EB9DE96CA5DFAA9EA4512 /* ShopView.swift */; };
+		B4399FF484AB614EB2CB6709 /* DailyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4CA8AB2A53309D0945BF882 /* DailyView.swift */; };
 		D768C4862956D247857AAB12 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6685707BB133EA55AC619473 /* Assets.xcassets */; };
+		E79740A5C1CD54D6B4932A19 /* PersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF2214CCECB1004BD484FA7 /* PersistenceService.swift */; };
 		FB5C6185F473E62A8857BC3F /* KitaQueueApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E63F4D7449FCF1295F075F9 /* KitaQueueApp.swift */; };
 /* End PBXBuildFile section */
 
@@ -26,12 +36,22 @@
 
 /* Begin PBXFileReference section */
 		3E63F4D7449FCF1295F075F9 /* KitaQueueApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KitaQueueApp.swift; sourceTree = "<group>"; };
+		3ECED8188A02303A361E595D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		509B0B116F40917B4C5B26C8 /* RootTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
 		6685707BB133EA55AC619473 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		66D3269B3265E420CCAADE2D /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		86A55DBCED0B248C42EF1650 /* KitaQueue_v2Tests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = KitaQueue_v2Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D4E5AB1CA21499603DD5863 /* KitaQueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KitaQueueTests.swift; sourceTree = "<group>"; };
 		A1D7CE37B026A213EFD5217C /* KitaQueue_v2.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = KitaQueue_v2.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A94EB9DE96CA5DFAA9EA4512 /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
 		B747D9FE131179F522E9831E /* Gameplay.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Gameplay.atlas; sourceTree = "<group>"; };
 		C78EBBE1FB4336A7B1F09619 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		CB97B1E060C1896E6BD20DB4 /* DailyStateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyStateModel.swift; sourceTree = "<group>"; };
+		D4303F9680F63D8A5104B739 /* PlayHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayHubView.swift; sourceTree = "<group>"; };
+		DDF2214CCECB1004BD484FA7 /* PersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceService.swift; sourceTree = "<group>"; };
+		E37D8D43D78EE02C6C5415D8 /* PlayerProgression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerProgression.swift; sourceTree = "<group>"; };
+		E4CA8AB2A53309D0945BF882 /* DailyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyView.swift; sourceTree = "<group>"; };
+		F43C79B809E554BC651CF704 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		FEAA34B2BA98856DE8230922 /* Shell.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Shell.atlas; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -46,6 +66,8 @@
 		34590ABF41BBF1974FE1E5EA /* Play */ = {
 			isa = PBXGroup;
 			children = (
+				D4303F9680F63D8A5104B739 /* PlayHubView.swift */,
+				3ECED8188A02303A361E595D /* SettingsView.swift */,
 			);
 			path = Play;
 			sourceTree = "<group>";
@@ -67,7 +89,9 @@
 		3D70CFC2144D557FCF7C4E9B /* App */ = {
 			isa = PBXGroup;
 			children = (
+				66D3269B3265E420CCAADE2D /* AppState.swift */,
 				3E63F4D7449FCF1295F075F9 /* KitaQueueApp.swift */,
+				509B0B116F40917B4C5B26C8 /* RootTabView.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -75,6 +99,10 @@
 		44B3FBD64AFD641AD2198552 /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
+				CB97B1E060C1896E6BD20DB4 /* DailyStateModel.swift */,
+				DDF2214CCECB1004BD484FA7 /* PersistenceService.swift */,
+				E37D8D43D78EE02C6C5415D8 /* PlayerProgression.swift */,
+				F43C79B809E554BC651CF704 /* UserSettings.swift */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -187,6 +215,7 @@
 		CFA5B08C6D27ADD7CA4D9EF7 /* Shop */ = {
 			isa = PBXGroup;
 			children = (
+				A94EB9DE96CA5DFAA9EA4512 /* ShopView.swift */,
 			);
 			path = Shop;
 			sourceTree = "<group>";
@@ -219,6 +248,7 @@
 		F28CFE42D1EFCD477660470A /* Daily */ = {
 			isa = PBXGroup;
 			children = (
+				E4CA8AB2A53309D0945BF882 /* DailyView.swift */,
 			);
 			path = Daily;
 			sourceTree = "<group>";
@@ -341,7 +371,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3D0BBDADD6395B28A9B1EFDE /* AppState.swift in Sources */,
+				148C4AC110BF9EA1AEC5B8B4 /* DailyStateModel.swift in Sources */,
+				B4399FF484AB614EB2CB6709 /* DailyView.swift in Sources */,
 				FB5C6185F473E62A8857BC3F /* KitaQueueApp.swift in Sources */,
+				E79740A5C1CD54D6B4932A19 /* PersistenceService.swift in Sources */,
+				825112B425F0264713FFF53B /* PlayHubView.swift in Sources */,
+				A09CE8DEE29D850B9B14C8C7 /* PlayerProgression.swift in Sources */,
+				765C4EADB4A610406F07A488 /* RootTabView.swift in Sources */,
+				19075BE9AA7CA37A78F92EC1 /* SettingsView.swift in Sources */,
+				B33F08240789ED20D7EC1142 /* ShopView.swift in Sources */,
+				1C61A3AC7AB72605778AFECE /* UserSettings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
