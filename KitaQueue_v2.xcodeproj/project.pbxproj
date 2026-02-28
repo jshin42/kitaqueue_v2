@@ -59,6 +59,7 @@
 		7C18A4818013E29283BB99D4 /* level_008.json in Resources */ = {isa = PBXBuildFile; fileRef = 4DD78A90C6BE9D5443EA1026 /* level_008.json */; };
 		7DD860DC1D4331E6D379869E /* OperatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D2A1CA73115821A5E915B0 /* OperatorTests.swift */; };
 		825112B425F0264713FFF53B /* PlayHubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4303F9680F63D8A5104B739 /* PlayHubView.swift */; };
+		843C70A5153CE4964E00AA1E /* IAPProducts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3EA3F33D8D7CF747C82D5AD /* IAPProducts.swift */; };
 		87345BB798972E8EEFBEB47E /* StarCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFA7317D7C0F7ABE4CB6903 /* StarCalculator.swift */; };
 		8ACF2507201395EC6C802BBE /* ShurikenColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC2F924FA5431EEBBB32D41 /* ShurikenColor.swift */; };
 		90E354A0E78363CDACD760DA /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB20244A79CCF20772422BF3 /* HapticManager.swift */; };
@@ -74,6 +75,7 @@
 		C5E7F02D579E7B34AD477CFD /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD35CA77AA99F4117B99EEC1 /* GameScene.swift */; };
 		D348ECC2FCADD2BE37CDBBA5 /* WinOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6F2782DBBE55559A80F7F1 /* WinOverlayView.swift */; };
 		D768C4862956D247857AAB12 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6685707BB133EA55AC619473 /* Assets.xcassets */; };
+		D8A8C43BE467486533E2585F /* ProductCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01241E800483E295CB0A2FA /* ProductCardView.swift */; };
 		D8CB51098CF48DF86C18C34A /* level_010.json in Resources */ = {isa = PBXBuildFile; fileRef = AAA75E072030FE13F7B9A469 /* level_010.json */; };
 		DB20F043EDA964AD82C7AFD0 /* CopyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA4B483A3C4E5773B2DD8D0 /* CopyModel.swift */; };
 		DB4ED357DB82400C364E53B9 /* DeterminismTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B47C975C0ACD26A2C33B6F /* DeterminismTests.swift */; };
@@ -83,6 +85,7 @@
 		ED34836198B5B647C64F205D /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F3B1A1B63B2578027ED504 /* SoundManager.swift */; };
 		F12039CEA5A3C6DFDF823B5B /* BankingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135562D7B8D6846552C11224 /* BankingTests.swift */; };
 		F74BD85C1D7994E47688D0A0 /* level_004.json in Resources */ = {isa = PBXBuildFile; fileRef = 78603F7D5A4C3DBE387E31CB /* level_004.json */; };
+		F7A0DA7145EFA0CBCA9D93DC /* IAPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59C527855E44F8202EF2A4AC /* IAPManager.swift */; };
 		F94DE0C173743E6B2E6DC8BF /* NinjaNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF6C9F812AB3AF43EF7B29 /* NinjaNode.swift */; };
 		FB5C6185F473E62A8857BC3F /* KitaQueueApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E63F4D7449FCF1295F075F9 /* KitaQueueApp.swift */; };
 /* End PBXBuildFile section */
@@ -125,6 +128,7 @@
 		559FF82991F60CAEC0EA520B /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
 		581F2B7A63BB7982DDA99718 /* Gate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gate.swift; sourceTree = "<group>"; };
 		58F4082E1B0DF31A108789D7 /* InputReplayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputReplayer.swift; sourceTree = "<group>"; };
+		59C527855E44F8202EF2A4AC /* IAPManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPManager.swift; sourceTree = "<group>"; };
 		65EF3B30E20226808C690560 /* GhostPreviewNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GhostPreviewNode.swift; sourceTree = "<group>"; };
 		6685707BB133EA55AC619473 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		66D3269B3265E420CCAADE2D /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
@@ -148,6 +152,7 @@
 		AAA4B483A3C4E5773B2DD8D0 /* CopyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyModel.swift; sourceTree = "<group>"; };
 		AAA75E072030FE13F7B9A469 /* level_010.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = level_010.json; sourceTree = "<group>"; };
 		AD35CA77AA99F4117B99EEC1 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		B01241E800483E295CB0A2FA /* ProductCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCardView.swift; sourceTree = "<group>"; };
 		B13052B006D8DAF8D8A6C5AB /* LayoutCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutCalculator.swift; sourceTree = "<group>"; };
 		B44EF78DCDDEF0E1AA50C57B /* CheckpointManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckpointManager.swift; sourceTree = "<group>"; };
 		B4A74C10B5D44B5426AF2088 /* ShurikenNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShurikenNode.swift; sourceTree = "<group>"; };
@@ -169,6 +174,7 @@
 		DC2B7F9B2C0637B7F8379EF6 /* GameStateHasher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStateHasher.swift; sourceTree = "<group>"; };
 		DDF2214CCECB1004BD484FA7 /* PersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceService.swift; sourceTree = "<group>"; };
 		E37D8D43D78EE02C6C5415D8 /* PlayerProgression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerProgression.swift; sourceTree = "<group>"; };
+		E3EA3F33D8D7CF747C82D5AD /* IAPProducts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPProducts.swift; sourceTree = "<group>"; };
 		E3F3B1A1B63B2578027ED504 /* SoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
 		E4CA8AB2A53309D0945BF882 /* DailyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyView.swift; sourceTree = "<group>"; };
 		EB92DBE610B286AB33BBF674 /* SpawnStripNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpawnStripNode.swift; sourceTree = "<group>"; };
@@ -395,6 +401,8 @@
 		C6AEB919256BBDA1CEF626F1 /* IAP */ = {
 			isa = PBXGroup;
 			children = (
+				59C527855E44F8202EF2A4AC /* IAPManager.swift */,
+				E3EA3F33D8D7CF747C82D5AD /* IAPProducts.swift */,
 			);
 			path = IAP;
 			sourceTree = "<group>";
@@ -402,6 +410,7 @@
 		CFA5B08C6D27ADD7CA4D9EF7 /* Shop */ = {
 			isa = PBXGroup;
 			children = (
+				B01241E800483E295CB0A2FA /* ProductCardView.swift */,
 				A94EB9DE96CA5DFAA9EA4512 /* ShopView.swift */,
 			);
 			path = Shop;
@@ -601,6 +610,8 @@
 				17AF4695DE487E0879D2BDB1 /* GhostPreviewNode.swift in Sources */,
 				601E4795B273F2095D6D5871 /* HUDNode.swift in Sources */,
 				90E354A0E78363CDACD760DA /* HapticManager.swift in Sources */,
+				F7A0DA7145EFA0CBCA9D93DC /* IAPManager.swift in Sources */,
+				843C70A5153CE4964E00AA1E /* IAPProducts.swift in Sources */,
 				3837E924A3927A23FD1A8B18 /* InputRecorder.swift in Sources */,
 				526B672616C6BEDF9EEBA6B2 /* InputReplayer.swift in Sources */,
 				2E520D8133E74E87593EAEF0 /* InteractionProcessor.swift in Sources */,
@@ -620,6 +631,7 @@
 				825112B425F0264713FFF53B /* PlayHubView.swift in Sources */,
 				16084B72C9B86603E5065D44 /* PlayerInput.swift in Sources */,
 				A09CE8DEE29D850B9B14C8C7 /* PlayerProgression.swift in Sources */,
+				D8A8C43BE467486533E2585F /* ProductCardView.swift in Sources */,
 				BA52B694BCE0491945B59B74 /* QuestRowView.swift in Sources */,
 				765C4EADB4A610406F07A488 /* RootTabView.swift in Sources */,
 				19075BE9AA7CA37A78F92EC1 /* SettingsView.swift in Sources */,
