@@ -63,6 +63,9 @@ final class GameSceneCoordinator {
         self.simulation = sim
 
         scene?.setupBoard()
+
+        TelemetryService.shared.setLevel(id, attempt: attemptNumber)
+        TelemetryService.shared.log(.levelStart(levelId: id, attemptId: attemptNumber))
     }
 
     func retry() {
@@ -77,6 +80,9 @@ final class GameSceneCoordinator {
         gamePhase = .preview
         scene?.clearDynamicNodes()
         scene?.setupBoard()
+
+        TelemetryService.shared.setLevel(currentLevel, attempt: attemptNumber)
+        TelemetryService.shared.log(.levelStart(levelId: currentLevel, attemptId: attemptNumber))
     }
 
     func nextLevel() {
@@ -242,6 +248,12 @@ final class GameSceneCoordinator {
 
             HapticManager.shared.snapConfirm()
             SoundManager.shared.playSlashPlace()
+
+            TelemetryService.shared.log(.operatorPlaced(
+                row: row, slot: slot.name,
+                charges: GameConstants.chargesPerOperator,
+                activeCount: sim.state.operators.count
+            ))
         } else {
             // Cap reached
             HapticManager.shared.error()
@@ -278,12 +290,16 @@ final class GameSceneCoordinator {
         case .shurikenSpawned(let id, let color, let lane):
             scene?.spawnShurikenNode(id: id, color: color, lane: lane)
 
-        case .shurikenBanked(_, let bankColor):
+        case .shurikenBanked(let shurikenId, let bankColor):
             bankedCount = simulation?.state.bankedCount ?? bankedCount
             scene?.updateCounter(banked: bankedCount, total: totalShuriken)
             scene?.flashBank(lane: bankColor.laneIndex)
             HapticManager.shared.bankTick()
             SoundManager.shared.playBankTick()
+            TelemetryService.shared.log(.shurikenBanked(shurikenId: shurikenId, bankColor: bankColor.rawValue))
+            TelemetryService.shared.log(.goalSalienceShown(
+                proximityToWin: totalShuriken - bankedCount, bankedCount: bankedCount
+            ))
 
         case .shurikenMisbanked(_, _, _):
             bankedCount = simulation?.state.bankedCount ?? bankedCount
@@ -293,13 +309,43 @@ final class GameSceneCoordinator {
             HapticManager.shared.failThud()
             SoundManager.shared.playFailThud()
             scene?.showFailFlash()
+            let remaining = totalShuriken - bankedCount
+            TelemetryService.shared.log(.levelFail(
+                levelId: currentLevel, reason: "misbank",
+                remainingToBank: remaining, overflowMargin: nil,
+                usedOperators: operatorsUsed
+            ))
+            TelemetryService.shared.log(.nearMissDetected(
+                type: "misbank", proximityMetric: remaining, levelId: currentLevel
+            ))
+            TelemetryService.shared.log(.causalityTrace(
+                failReason: "misbank", eventChain: "wrong_color_at_bank"
+            ))
 
-        case .operatorTriggered(let row, let slot, _, let remaining):
+        case .operatorTriggered(let row, let slot, let shurikenId, let remaining):
             scene?.triggerOperatorNode(row: row, slot: slot, remainingCharges: remaining)
             HapticManager.shared.operatorTrigger()
             SoundManager.shared.playSlashTrigger()
+            TelemetryService.shared.log(.operatorTriggered(
+                row: row, slot: slot.name, shurikenId: shurikenId,
+                remainingCharges: remaining
+            ))
 
         case .gateTriggered(let gateType, let lane, let row, let result):
+            let gateTypeName: String = switch gateType {
+            case .color: "color"
+            case .toggle: "toggle"
+            case .paint: "paint"
+            }
+            let resultName: String = switch result {
+            case .jam: "jam"
+            case .paint: "paint"
+            case .pass: "pass"
+            }
+            TelemetryService.shared.log(.gateTriggered(
+                type: gateTypeName, lane: lane, row: row, result: resultName
+            ))
+
             switch result {
             case .jam:
                 scene?.jamShuriken(lane: lane, row: row)
@@ -313,6 +359,20 @@ final class GameSceneCoordinator {
                     HapticManager.shared.failThud()
                     SoundManager.shared.playFailThud()
                     scene?.showFailFlash()
+
+                    let remaining = totalShuriken - (simulation?.state.bankedCount ?? 0)
+                    let margin = simulation?.state.overflowMargin ?? 0
+                    TelemetryService.shared.log(.levelFail(
+                        levelId: currentLevel, reason: "overflow",
+                        remainingToBank: remaining, overflowMargin: margin,
+                        usedOperators: operatorsUsed
+                    ))
+                    TelemetryService.shared.log(.nearMissDetected(
+                        type: "overflow", proximityMetric: margin, levelId: currentLevel
+                    ))
+                    TelemetryService.shared.log(.causalityTrace(
+                        failReason: "overflow", eventChain: "jam_count_exceeded_\(lane)"
+                    ))
                 }
             case .paint:
                 // Find the paint gate's toColor from level data
@@ -343,12 +403,28 @@ final class GameSceneCoordinator {
             HapticManager.shared.winBurst()
             SoundManager.shared.playWinSting()
             scene?.showConfetti()
+            TelemetryService.shared.log(.levelWin(
+                levelId: currentLevel, usedOperators: ops, stars: starRating
+            ))
+            let coins = StarCalculator.coins(stars: starRating)
+            let xp = StarCalculator.xp(stars: starRating)
+            TelemetryService.shared.log(.currencyFlow(
+                source: "level_win", sink: "coins", amount: coins,
+                context: "L\(currentLevel)_\(starRating)star"
+            ))
+            TelemetryService.shared.log(.currencyFlow(
+                source: "level_win", sink: "xp", amount: xp,
+                context: "L\(currentLevel)_\(starRating)star"
+            ))
 
         case .tutorialPaused:
             gamePhase = .tutorialPaused
             if let text = simulation?.levelData.tutorialConfig?.overlayText {
                 scene?.showTutorialOverlay(text: text)
             }
+            TelemetryService.shared.log(.tutorialStepShown(
+                stepId: "L\(currentLevel)_overlay", levelId: currentLevel
+            ))
 
         case .operatorPlaced, .operatorRemoved:
             break

@@ -31,6 +31,7 @@ struct PlayHubView: View {
 
                     // Play Next CTA
                     Button {
+                        TelemetryService.shared.log(.playNextClicked)
                         appState.navigationPath.append(.gameplay(levelId: progression.currentLevel))
                     } label: {
                         VStack(spacing: 8) {
@@ -122,6 +123,10 @@ struct PlayHubView: View {
             }
         }
         .toolbarBackground(.hidden, for: .navigationBar)
+        .onAppear {
+            progression = PersistenceService.shared.loadProgression()
+            TelemetryService.shared.log(.hubViewed)
+        }
     }
 
     private func beltName(for xp: Int) -> String {

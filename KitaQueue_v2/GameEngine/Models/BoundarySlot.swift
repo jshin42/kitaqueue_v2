@@ -5,6 +5,14 @@ import Foundation
 enum BoundarySlot: Int, Codable, CaseIterable, Hashable, Sendable {
     case a = 0, b = 1, c = 2
 
+    var name: String {
+        switch self {
+        case .a: "A"
+        case .b: "B"
+        case .c: "C"
+        }
+    }
+
     /// The two lanes adjacent to this boundary slot
     var adjacentLanes: (left: Int, right: Int) {
         switch self {

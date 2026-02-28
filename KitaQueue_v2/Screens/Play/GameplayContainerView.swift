@@ -178,16 +178,27 @@ struct GameplayContainerView: View {
     }
 
     private func handleFixIt() {
+        let reason: String = coordinator.failReason.map {
+            switch $0 {
+            case .overflow: "overflow"
+            case .misbank: "misbank"
+            }
+        } ?? "unknown"
+        TelemetryService.shared.log(.fixitOfferShown(reason: reason))
+
         let requiresAd = AdPolicy.fixItRequiresAd(level: coordinator.currentLevel)
 
         if requiresAd {
             Task {
                 let earned = await AdManager.shared.showRewardedForFixIt()
                 if earned {
+                    TelemetryService.shared.log(.fixitOfferAccepted(type: "rewarded"))
+                    TelemetryService.shared.log(.adImpression(format: "rewarded", placement: "fix_it"))
                     applyFixIt()
                 }
             }
         } else {
+            TelemetryService.shared.log(.fixitOfferAccepted(type: "free"))
             applyFixIt()
         }
     }

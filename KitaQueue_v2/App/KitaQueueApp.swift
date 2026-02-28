@@ -8,6 +8,9 @@ struct KitaQueueApp: App {
         WindowGroup {
             RootTabView(appState: appState)
                 .preferredColorScheme(.dark)
+                .onAppear {
+                    TelemetryService.shared.log(.appOpen)
+                }
         }
     }
 }
