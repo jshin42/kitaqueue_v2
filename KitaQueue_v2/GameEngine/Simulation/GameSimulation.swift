@@ -2,6 +2,9 @@ import Foundation
 
 /// Pure deterministic game simulation. No UIKit/SpriteKit imports.
 /// Fixed 60Hz timestep accumulator. Row-based interactions.
+///
+/// Events are collected in `pendingEvents` during `tick()` and `applyInput()`.
+/// The caller (GameScene) drains events after each tick on the main thread.
 final class GameSimulation {
     private(set) var state: GameState
     let levelData: LevelData
@@ -15,12 +18,20 @@ final class GameSimulation {
     private var accumulator: Double = 0
     private static let fixedDt: Double = 1.0 / 60.0
 
-    weak var delegate: SimulationDelegate?
+    /// Events emitted during the most recent tick/input. Drain after each tick.
+    private(set) var pendingEvents: [SimulationEvent] = []
 
     init(levelData: LevelData) {
         self.levelData = levelData
         self.state = GameState()
         self.spawnManager = SpawnManager(levelData: levelData)
+    }
+
+    /// Drain and return all pending events, clearing the buffer.
+    func drainEvents() -> [SimulationEvent] {
+        let events = pendingEvents
+        pendingEvents.removeAll()
+        return events
     }
 
     // MARK: - Tick
@@ -53,7 +64,7 @@ final class GameSimulation {
                 // If tutorial level, pause for tutorial overlay
                 if levelData.tutorialConfig?.pauseBeforeFirstSpawn == true {
                     state.phase = .tutorialPaused
-                    delegate?.simulationDidEmitEvent(.tutorialPaused)
+                    pendingEvents.append(.tutorialPaused)
                     return
                 }
             }
@@ -88,7 +99,7 @@ final class GameSimulation {
             dt: dt
         )
         for event in interactionEvents {
-            delegate?.simulationDidEmitEvent(event)
+            pendingEvents.append(event)
 
             // Save checkpoint at interaction points
             checkpointManager.saveCheckpoint(state)
@@ -98,9 +109,7 @@ final class GameSimulation {
 
         // Bank validation
         let bankEvents = bankValidator.validateBanking(state: &state)
-        for event in bankEvents {
-            delegate?.simulationDidEmitEvent(event)
-        }
+        pendingEvents.append(contentsOf: bankEvents)
     }
 
     // MARK: - Spawning
@@ -132,7 +141,7 @@ final class GameSimulation {
             state.shurikenInCurrentWave += 1
             state.timeSinceLastSpawn = 0
 
-            delegate?.simulationDidEmitEvent(.shurikenSpawned(id: shuriken.id, color: spawn.color, lane: spawn.lane))
+            pendingEvents.append(.shurikenSpawned(id: shuriken.id, color: spawn.color, lane: spawn.lane))
 
             // Check if wave is complete
             if state.shurikenInCurrentWave >= GameConstants.shurikenPerWave {
@@ -159,7 +168,7 @@ final class GameSimulation {
 
         // WIN
         state.phase = .won
-        delegate?.simulationDidEmitEvent(.levelWon(
+        pendingEvents.append(.levelWon(
             operatorsUsed: state.totalOperatorsPlaced,
             bankedCount: state.bankedCount
         ))
@@ -174,7 +183,7 @@ final class GameSimulation {
         case .place(let row, let slot, _):
             let success = operatorManager.placeOperator(row: row, slot: slot, state: &state)
             if success {
-                delegate?.simulationDidEmitEvent(.operatorPlaced(
+                pendingEvents.append(.operatorPlaced(
                     row: row,
                     slot: slot,
                     activeCount: state.operators.count
@@ -184,11 +193,23 @@ final class GameSimulation {
 
         case .undo:
             if let removed = operatorManager.undoLastOperator(state: &state) {
-                delegate?.simulationDidEmitEvent(.operatorRemoved(row: removed.row, slot: removed.slot))
+                pendingEvents.append(.operatorRemoved(row: removed.row, slot: removed.slot))
                 return true
             }
             return false
         }
+    }
+
+    /// Pause the simulation
+    func pause() {
+        guard state.phase == .playing else { return }
+        state.phase = .paused
+    }
+
+    /// Resume from pause
+    func resume() {
+        guard state.phase == .paused else { return }
+        state.phase = .playing
     }
 
     /// Resume from tutorial pause
@@ -211,6 +232,7 @@ final class GameSimulation {
     func reset() {
         state = GameState()
         accumulator = 0
+        pendingEvents.removeAll()
         checkpointManager.clear()
     }
 }
@@ -231,10 +253,4 @@ enum SimulationEvent: Sendable {
     enum GateResult: Sendable {
         case pass, jam, paint
     }
-}
-
-// MARK: - Delegate
-
-protocol SimulationDelegate: AnyObject {
-    func simulationDidEmitEvent(_ event: SimulationEvent)
 }

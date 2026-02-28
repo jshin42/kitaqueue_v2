@@ -2,6 +2,7 @@ import SpriteKit
 
 /// Main SpriteKit scene for gameplay.
 /// Renders the board: lanes, banks, gates, shuriken, operators, HUD.
+/// Handles touch input for operator placement with ghost preview.
 final class GameScene: SKScene {
 
     weak var coordinator: GameSceneCoordinator?
@@ -22,6 +23,16 @@ final class GameScene: SKScene {
     private var parBadgeLabel: SKLabelNode?
     private var spawnPreviewNodes: [SKSpriteNode] = []
 
+    // MARK: - Touch State
+
+    private var ghostPreview: GhostPreviewNode?
+    private var currentSnapRow: Int?
+    private var currentSnapSlot: BoundarySlot?
+
+    // MARK: - Update Tracking
+
+    private var lastUpdateTime: TimeInterval = 0
+
     // MARK: - Layout
 
     private var layout: LayoutCalculator {
@@ -32,9 +43,8 @@ final class GameScene: SKScene {
 
     override func didMove(to view: SKView) {
         super.didMove(to: view)
-        backgroundColor = UIColor(red: 0.06, green: 0.06, blue: 0.15, alpha: 1.0) // Dark indigo
+        backgroundColor = UIColor(red: 0.06, green: 0.06, blue: 0.15, alpha: 1.0)
 
-        // Set up node hierarchy
         addChild(backgroundLayer)
         addChild(laneLayer)
         addChild(gateLayer)
@@ -43,8 +53,8 @@ final class GameScene: SKScene {
         addChild(hudLayer)
         addChild(overlayLayer)
 
-        for layer in [backgroundLayer, laneLayer, gateLayer, operatorLayer, shurikenLayer, hudLayer, overlayLayer] {
-            layer.zPosition = CGFloat([backgroundLayer, laneLayer, gateLayer, operatorLayer, shurikenLayer, hudLayer, overlayLayer].firstIndex(of: layer) ?? 0) * 10
+        for (index, layer) in [backgroundLayer, laneLayer, gateLayer, operatorLayer, shurikenLayer, hudLayer, overlayLayer].enumerated() {
+            layer.zPosition = CGFloat(index) * 10
         }
 
         setupBoard()
@@ -53,7 +63,6 @@ final class GameScene: SKScene {
     // MARK: - Board Setup
 
     func setupBoard() {
-        // Clear existing
         laneLayer.removeAllChildren()
         gateLayer.removeAllChildren()
         operatorLayer.removeAllChildren()
@@ -96,7 +105,7 @@ final class GameScene: SKScene {
         }
 
         // Ninja mascot (decorative)
-        if l.boardInset > 40 { // Only show if there's room
+        if l.boardInset > 40 {
             let ninjaSize = l.ninjaSize
             let ninja = NinjaNode(size: ninjaSize)
             ninja.position = l.ninjaPosition
@@ -115,7 +124,7 @@ final class GameScene: SKScene {
         setupSpawnStrip()
 
         // HUD: Counter badge
-        let counter = SKLabelNode(text: "0/24")
+        let counter = SKLabelNode(text: "0/\(coordinator?.totalShuriken ?? 24)")
         counter.fontName = "AvenirNext-Bold"
         counter.fontSize = 16
         counter.fontColor = .white
@@ -125,7 +134,7 @@ final class GameScene: SKScene {
         hudLayer.addChild(counter)
 
         // HUD: Par badge
-        let par = SKLabelNode(text: "0/6")
+        let par = SKLabelNode(text: "0/\(coordinator?.parThreshold ?? 6)")
         par.fontName = "AvenirNext-DemiBold"
         par.fontSize = 14
         par.fontColor = .green
@@ -134,7 +143,7 @@ final class GameScene: SKScene {
         parBadgeLabel = par
         hudLayer.addChild(par)
 
-        // Board border lines (top and bottom of play area)
+        // Board border lines
         let topLine = SKShapeNode(rectOf: CGSize(width: l.boardWidth, height: 1))
         topLine.fillColor = .white.withAlphaComponent(0.1)
         topLine.strokeColor = .clear
@@ -152,7 +161,6 @@ final class GameScene: SKScene {
         let l = layout
         spawnPreviewNodes.removeAll()
 
-        // Strip background
         let stripWidth = l.boardWidth * 0.85
         let stripHeight: CGFloat = 36
         let stripBg = SKShapeNode(rectOf: CGSize(width: stripWidth, height: stripHeight), cornerRadius: 8)
@@ -162,7 +170,6 @@ final class GameScene: SKScene {
         stripBg.position = CGPoint(x: size.width / 2, y: l.spawnStripY)
         hudLayer.addChild(stripBg)
 
-        // "NEXT" label
         let nextLabel = SKLabelNode(text: "NEXT")
         nextLabel.fontName = "AvenirNext-DemiBold"
         nextLabel.fontSize = 10
@@ -170,7 +177,6 @@ final class GameScene: SKScene {
         nextLabel.position = CGPoint(x: size.width / 2 - stripWidth / 2 + 24, y: l.spawnStripY - 4)
         hudLayer.addChild(nextLabel)
 
-        // 8 preview slots
         for i in 0..<8 {
             let slotNode = SKSpriteNode(color: .clear, size: l.spawnPreviewSize)
             slotNode.position = l.spawnPreviewPosition(index: i)
@@ -179,10 +185,182 @@ final class GameScene: SKScene {
         }
     }
 
-    // MARK: - Update
+    // MARK: - Clear Dynamic Nodes
+
+    func clearDynamicNodes() {
+        shurikenLayer.removeAllChildren()
+        operatorLayer.removeAllChildren()
+        removeGhostPreview()
+    }
+
+    // MARK: - Update Loop
+
+    override func update(_ currentTime: TimeInterval) {
+        let dt: TimeInterval
+        if lastUpdateTime == 0 {
+            dt = 0
+        } else {
+            dt = min(currentTime - lastUpdateTime, 0.1) // Cap to avoid spiral of death
+        }
+        lastUpdateTime = currentTime
+
+        guard let sim = coordinator?.simulation else { return }
+
+        // Tick the simulation (collects events in pendingEvents)
+        sim.tick(dt: dt)
+
+        // Drain events and forward to coordinator for feedback (haptics, SFX, VFX)
+        let events = sim.drainEvents()
+        if !events.isEmpty {
+            coordinator?.processEvents(events)
+        }
+
+        // Sync visual state
+        syncShurikenPositions()
+        updateSpawnPreview()
+    }
+
+    // MARK: - Shuriken Sync
+
+    private func syncShurikenPositions() {
+        guard let sim = coordinator?.simulation else { return }
+        let l = layout
+        let activeIds = Set(sim.state.shuriken.map(\.id))
+
+        for shuriken in sim.state.shuriken {
+            guard let node = shurikenLayer.childNode(withName: "shuriken_\(shuriken.id)") as? ShurikenNode else { continue }
+            guard !shuriken.isJammed else { continue }
+
+            let x = l.laneX(shuriken.lane)
+            let y = l.boardTop - CGFloat(shuriken.progressY) * l.boardHeight
+            node.position = CGPoint(x: x, y: y)
+
+            // Update color if changed (paint gate)
+            if shuriken.color != node.shurikenColor {
+                node.updateColor(shuriken.color)
+            }
+        }
+
+        // Remove nodes for banked shuriken (no longer in state)
+        for node in shurikenLayer.children {
+            guard let sNode = node as? ShurikenNode else { continue }
+            if !activeIds.contains(sNode.shurikenId) && sNode.name?.hasPrefix("removing_") != true {
+                sNode.name = "removing_\(sNode.shurikenId)"
+                sNode.run(.sequence([
+                    .fadeOut(withDuration: 0.15),
+                    .removeFromParent()
+                ]))
+            }
+        }
+    }
+
+    private func updateSpawnPreview() {
+        guard let sim = coordinator?.simulation else { return }
+        let colors = sim.spawnPreview(count: GameConstants.spawnPreviewCount)
+        let l = layout
+
+        for (i, node) in spawnPreviewNodes.enumerated() {
+            if i < colors.count {
+                node.texture = SKTexture.game(
+                    "shuriken_\(colors[i].rawValue)",
+                    size: l.spawnPreviewSize,
+                    fallbackColor: colors[i].uiColor
+                )
+                node.alpha = 1.0
+            } else {
+                node.texture = nil
+                node.color = .clear
+                node.alpha = 0.2
+            }
+        }
+    }
+
+    // MARK: - Shuriken Nodes
+
+    func spawnShurikenNode(id: Int, color: ShurikenColor, lane: Int) {
+        let l = layout
+        let node = ShurikenNode(id: id, color: color, size: l.shurikenSize)
+        node.position = CGPoint(x: l.laneX(lane), y: l.boardTop)
+        node.alpha = 0
+        shurikenLayer.addChild(node)
+        node.run(.fadeIn(withDuration: 0.15))
+    }
+
+    func flashBank(lane: Int) {
+        guard let bank = laneLayer.childNode(withName: "bank_\(lane)") as? BankNode else { return }
+        bank.flashGlow()
+
+        let l = layout
+        let glow = ParticleFactory.bankGlow(at: l.bankPosition(lane: lane), color: bank.bankColor)
+        overlayLayer.addChild(glow)
+    }
+
+    func jamShuriken(lane: Int, row: Int) {
+        guard let sim = coordinator?.simulation else { return }
+        for s in sim.state.shuriken.reversed() where s.isJammed && s.lane == lane {
+            if let node = shurikenLayer.childNode(withName: "shuriken_\(s.id)") as? ShurikenNode {
+                node.showJammed()
+                break
+            }
+        }
+    }
+
+    // MARK: - Operator Nodes
+
+    func addOperatorNode(id: Int, row: Int, slot: BoundarySlot, position: CGPoint, size: CGSize) {
+        let node = OperatorNode(id: id, row: row, slot: slot, size: size)
+        node.position = position
+        node.alpha = 0
+        node.setScale(0.5)
+        operatorLayer.addChild(node)
+
+        node.run(.group([
+            .fadeIn(withDuration: 0.15),
+            .scale(to: 1.0, duration: 0.15)
+        ]))
+    }
+
+    func removeLastOperatorNode() {
+        let opNodes = operatorLayer.children.compactMap { $0 as? OperatorNode }
+        guard let lastNode = opNodes.max(by: { $0.operatorId < $1.operatorId }) else { return }
+        lastNode.animateRemoval()
+    }
+
+    func triggerOperatorNode(row: Int, slot: BoundarySlot, remainingCharges: Int) {
+        let opNodes = operatorLayer.children.compactMap { $0 as? OperatorNode }
+        guard let node = opNodes.first(where: { $0.row == row && $0.slot == slot }) else { return }
+
+        node.updateCharges(remainingCharges)
+        node.showTriggerFlash(color: .cyan)
+
+        let spark = ParticleFactory.sparkHit(at: node.position, color: .cyan)
+        overlayLayer.addChild(spark)
+
+        if remainingCharges <= 0 {
+            node.animateRemoval()
+        }
+    }
+
+    // MARK: - VFX
+
+    func showFailFlash() {
+        let flash = ParticleFactory.failFlash(in: size)
+        overlayLayer.addChild(flash)
+    }
+
+    func showConfetti() {
+        let confetti = ParticleFactory.confetti(in: size)
+        overlayLayer.addChild(confetti)
+    }
+
+    // MARK: - HUD Updates
 
     func updateCounter(banked: Int, total: Int) {
         counterLabel?.text = "\(banked)/\(total)"
+        counterLabel?.run(.sequence([
+            .scale(to: 1.3, duration: 0.1),
+            .scale(to: 1.0, duration: 0.1)
+        ]))
     }
 
     func updateParBadge(used: Int, threshold: Int) {
@@ -196,17 +374,101 @@ final class GameScene: SKScene {
         }
     }
 
-    // MARK: - Touch Handling (will be expanded in M4)
+    // MARK: - Touch Handling
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        // Will handle operator placement in M4
+        guard coordinator?.gamePhase == .playing else { return }
+        guard let touch = touches.first else { return }
+        let point = touch.location(in: self)
+
+        if let snap = snapToGrid(point: point) {
+            showGhostPreview(row: snap.row, slot: snap.slot)
+        }
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        // Ghost preview in M4
+        guard coordinator?.gamePhase == .playing else { return }
+        guard let touch = touches.first else { return }
+        let point = touch.location(in: self)
+
+        if let snap = snapToGrid(point: point) {
+            if snap.row != currentSnapRow || snap.slot != currentSnapSlot {
+                showGhostPreview(row: snap.row, slot: snap.slot)
+            }
+        } else {
+            removeGhostPreview()
+        }
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        // Commit placement in M4
+        defer { removeGhostPreview() }
+        guard coordinator?.gamePhase == .playing else { return }
+
+        if let row = currentSnapRow, let slot = currentSnapSlot {
+            coordinator?.attemptPlacement(row: row, slot: slot)
+        }
+    }
+
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        removeGhostPreview()
+    }
+
+    // MARK: - Snap Grid
+
+    private func snapToGrid(point: CGPoint) -> (row: Int, slot: BoundarySlot)? {
+        let l = layout
+
+        var bestRow = 1
+        var bestRowDist = CGFloat.infinity
+        for r in 1...LayoutCalculator.rowCount {
+            let dist = abs(point.y - l.rowY(r))
+            if dist < bestRowDist {
+                bestRowDist = dist
+                bestRow = r
+            }
+        }
+
+        var bestSlotIdx = 0
+        var bestSlotDist = CGFloat.infinity
+        for s in 0..<3 {
+            let dist = abs(point.x - l.slotX(s))
+            if dist < bestSlotDist {
+                bestSlotDist = dist
+                bestSlotIdx = s
+            }
+        }
+
+        let tolerance = l.snapTolerance
+        guard bestRowDist <= tolerance, bestSlotDist <= tolerance else { return nil }
+        guard let slot = BoundarySlot(rawValue: bestSlotIdx) else { return nil }
+        return (bestRow, slot)
+    }
+
+    // MARK: - Ghost Preview
+
+    private func showGhostPreview(row: Int, slot: BoundarySlot) {
+        let l = layout
+        let pos = l.operatorPosition(row: row, slot: slot.rawValue)
+
+        if ghostPreview == nil {
+            let ghost = GhostPreviewNode(size: l.operatorSize)
+            ghost.zPosition = 35
+            addChild(ghost)
+            ghostPreview = ghost
+        }
+
+        ghostPreview?.position = pos
+        currentSnapRow = row
+        currentSnapSlot = slot
+
+        let canPlace = coordinator?.canPlace(row: row, slot: slot) ?? false
+        ghostPreview?.setValid(canPlace)
+    }
+
+    private func removeGhostPreview() {
+        ghostPreview?.removeFromParent()
+        ghostPreview = nil
+        currentSnapRow = nil
+        currentSnapSlot = nil
     }
 }

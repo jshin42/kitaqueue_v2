@@ -2,8 +2,9 @@ import SwiftUI
 import SpriteKit
 
 /// @Observable bridge between SwiftUI and SpriteKit.
-/// Owns the GameScene and will own the GameSimulation (M3).
-@Observable
+/// Owns the GameSimulation and synchronizes state with the scene.
+/// Events from simulation are processed via `processEvents()` called from GameScene.update().
+@MainActor @Observable
 final class GameSceneCoordinator {
 
     // MARK: - Published State (SwiftUI reads these)
@@ -15,15 +16,22 @@ final class GameSceneCoordinator {
     var starRating: Int = 0
     var currentLevel: Int = 1
     var attemptNumber: Int = 1
+    var failReason: FailReason? = nil
+    var nearMissBanked: Int? = nil
+    var nearMissOverflowMargin: Int? = nil
 
-    enum Phase {
+    enum Phase: Equatable {
         case idle, preview, playing, tutorialPaused, paused, won, failed
     }
     var gamePhase: Phase = .idle
 
-    // MARK: - Scene
+    // MARK: - Internal
 
+    private(set) var simulation: GameSimulation?
     private(set) var scene: GameScene?
+    private var levelData: LevelData?
+
+    // MARK: - Scene
 
     func makeScene(size: CGSize) -> GameScene {
         let s = GameScene(size: size)
@@ -33,7 +41,7 @@ final class GameSceneCoordinator {
         return s
     }
 
-    // MARK: - Actions
+    // MARK: - Level Lifecycle
 
     func startLevel(id: Int) {
         currentLevel = id
@@ -41,20 +49,171 @@ final class GameSceneCoordinator {
         operatorsUsed = 0
         starRating = 0
         attemptNumber = 1
+        failReason = nil
+        nearMissBanked = nil
+        nearMissOverflowMargin = nil
         gamePhase = .preview
+
+        let data = LevelLoader.loadOrGenerate(id: id)
+        self.levelData = data
+        self.totalShuriken = data.totalShuriken
+        self.parThreshold = data.threeStarMaxOps
+
+        let sim = GameSimulation(levelData: data)
+        self.simulation = sim
 
         scene?.setupBoard()
     }
 
+    func retry() {
+        simulation?.reset()
+        bankedCount = 0
+        operatorsUsed = 0
+        starRating = 0
+        failReason = nil
+        nearMissBanked = nil
+        nearMissOverflowMargin = nil
+        attemptNumber += 1
+        gamePhase = .preview
+        scene?.clearDynamicNodes()
+        scene?.setupBoard()
+    }
+
+    func nextLevel() {
+        startLevel(id: currentLevel + 1)
+    }
+
+    // MARK: - Actions
+
     func undoLastOperator() {
-        // Will be implemented in M4
+        guard let sim = simulation else { return }
+        let input = PlayerInput.undo(timestep: sim.state.timestep)
+        if sim.applyInput(input) {
+            scene?.removeLastOperatorNode()
+            operatorsUsed = sim.state.totalOperatorsPlaced
+            scene?.updateParBadge(used: operatorsUsed, threshold: parThreshold)
+        }
     }
 
     func pauseGame() {
+        simulation?.pause()
         gamePhase = .paused
     }
 
     func resumeGame() {
+        simulation?.resume()
         gamePhase = .playing
+    }
+
+    func resumeFromTutorial() {
+        simulation?.resumeFromTutorial()
+        gamePhase = .playing
+    }
+
+    // MARK: - Touch -> Operator Placement
+
+    func attemptPlacement(row: Int, slot: BoundarySlot) {
+        guard let sim = simulation else { return }
+
+        let input = PlayerInput.place(row: row, slot: slot, timestep: sim.state.timestep)
+        if sim.applyInput(input) {
+            // Success - visual + feedback
+            let layout = scene.map { LayoutCalculator(sceneSize: $0.size) }
+            if let layout = layout {
+                scene?.addOperatorNode(
+                    id: sim.state.operators.last!.id,
+                    row: row,
+                    slot: slot,
+                    position: layout.operatorPosition(row: row, slot: slot.rawValue),
+                    size: layout.operatorSize
+                )
+            }
+            operatorsUsed = sim.state.totalOperatorsPlaced
+            scene?.updateParBadge(used: operatorsUsed, threshold: parThreshold)
+
+            HapticManager.shared.snapConfirm()
+            SoundManager.shared.playSlashPlace()
+        } else {
+            // Cap reached
+            HapticManager.shared.error()
+        }
+    }
+
+    func canPlace(row: Int, slot: BoundarySlot) -> Bool {
+        simulation?.canPlaceOperator(row: row, slot: slot) ?? false
+    }
+
+    // MARK: - Event Processing (called from GameScene.update on main thread)
+
+    func processEvents(_ events: [SimulationEvent]) {
+        for event in events {
+            handleEvent(event)
+        }
+    }
+
+    private func handleEvent(_ event: SimulationEvent) {
+        switch event {
+        case .shurikenSpawned(let id, let color, let lane):
+            scene?.spawnShurikenNode(id: id, color: color, lane: lane)
+
+        case .shurikenBanked(_, let bankColor):
+            bankedCount = simulation?.state.bankedCount ?? bankedCount
+            scene?.updateCounter(banked: bankedCount, total: totalShuriken)
+            scene?.flashBank(lane: bankColor.laneIndex)
+            HapticManager.shared.bankTick()
+            SoundManager.shared.playBankTick()
+
+        case .shurikenMisbanked(_, _, _):
+            bankedCount = simulation?.state.bankedCount ?? bankedCount
+            failReason = simulation?.state.failReason
+            nearMissBanked = bankedCount
+            gamePhase = .failed
+            HapticManager.shared.failThud()
+            SoundManager.shared.playFailThud()
+            scene?.showFailFlash()
+
+        case .operatorTriggered(let row, let slot, _, let remaining):
+            scene?.triggerOperatorNode(row: row, slot: slot, remainingCharges: remaining)
+            HapticManager.shared.operatorTrigger()
+            SoundManager.shared.playSlashTrigger()
+
+        case .gateTriggered(_, let lane, let row, let result):
+            switch result {
+            case .jam:
+                scene?.jamShuriken(lane: lane, row: row)
+                HapticManager.shared.error()
+                SoundManager.shared.playGateBlock()
+                if simulation?.state.phase == .failed {
+                    failReason = simulation?.state.failReason
+                    nearMissOverflowMargin = simulation?.state.overflowMargin
+                    nearMissBanked = simulation?.state.bankedCount
+                    gamePhase = .failed
+                    HapticManager.shared.failThud()
+                    SoundManager.shared.playFailThud()
+                    scene?.showFailFlash()
+                }
+            case .paint:
+                SoundManager.shared.playPaintConvert()
+            case .pass:
+                break
+            }
+
+        case .levelWon(let ops, _):
+            starRating = StarCalculator.stars(
+                operatorsUsed: ops,
+                threeStarMax: levelData?.threeStarMaxOps ?? 6,
+                twoStarMax: levelData?.twoStarMaxOps ?? 8
+            )
+            gamePhase = .won
+            HapticManager.shared.winBurst()
+            SoundManager.shared.playWinSting()
+            scene?.showConfetti()
+
+        case .tutorialPaused:
+            gamePhase = .tutorialPaused
+
+        case .operatorPlaced, .operatorRemoved:
+            break
+        }
     }
 }
