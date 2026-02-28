@@ -11,9 +11,8 @@ struct RootTabView: View {
                         switch dest {
                         case .settings:
                             SettingsView()
-                        case .gameplay:
-                            // Placeholder — replaced in M2 with GameplayContainerView
-                            Text("Gameplay")
+                        case .gameplay(let levelId):
+                            GameplayContainerView(levelId: levelId, appState: appState)
                         }
                     }
             }
