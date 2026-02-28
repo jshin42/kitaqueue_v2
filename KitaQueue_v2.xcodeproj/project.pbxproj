@@ -31,6 +31,7 @@
 		32E816AD8A251066195611A7 /* level_009.json in Resources */ = {isa = PBXBuildFile; fileRef = 330A8441D5E9A91F8D270BB9 /* level_009.json */; };
 		382973887BC676EA27B47732 /* ShurikenNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4A74C10B5D44B5426AF2088 /* ShurikenNode.swift */; };
 		3837E924A3927A23FD1A8B18 /* InputRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3D14196FE273B0B79AE14F /* InputRecorder.swift */; };
+		38D5314986A4EF8AC79865AC /* FailOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE42072D97A022D8744959E /* FailOverlayView.swift */; };
 		3A830A084EF24A409F6D91F8 /* OperatorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34BD95EF03A748CB034FB1A /* OperatorManager.swift */; };
 		3D0BBDADD6395B28A9B1EFDE /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D3269B3265E420CCAADE2D /* AppState.swift */; };
 		40A1DD6447DFB2140E6E5951 /* Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D06E558827431EBC0F9EF9 /* Operator.swift */; };
@@ -53,6 +54,7 @@
 		6C2319F1B3924D65D279369A /* GameplayContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94F6867AB85AF836D6A2FC8 /* GameplayContainerView.swift */; };
 		6CC3A1F0C181229B70046F0F /* GameSceneCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184016EDB61E45DF58CD0D2E /* GameSceneCoordinator.swift */; };
 		706E8C2525698044DEB4FECA /* GameStateHasher.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2B7F9B2C0637B7F8379EF6 /* GameStateHasher.swift */; };
+		746F991A7BF6BA69C449DC7E /* CheckpointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D93DA4ADD552CBD7820057 /* CheckpointTests.swift */; };
 		765C4EADB4A610406F07A488 /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509B0B116F40917B4C5B26C8 /* RootTabView.swift */; };
 		7C18A4818013E29283BB99D4 /* level_008.json in Resources */ = {isa = PBXBuildFile; fileRef = 4DD78A90C6BE9D5443EA1026 /* level_008.json */; };
 		7DD860DC1D4331E6D379869E /* OperatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D2A1CA73115821A5E915B0 /* OperatorTests.swift */; };
@@ -67,7 +69,9 @@
 		B33F08240789ED20D7EC1142 /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94EB9DE96CA5DFAA9EA4512 /* ShopView.swift */; };
 		B4399FF484AB614EB2CB6709 /* DailyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4CA8AB2A53309D0945BF882 /* DailyView.swift */; };
 		B9EAF433AE0B71173E607488 /* level_002.json in Resources */ = {isa = PBXBuildFile; fileRef = 02AB0155E79F8F14212282CA /* level_002.json */; };
+		C19B791977FCDD766BF4450C /* PauseMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B7E78710C23AC3D91620F7 /* PauseMenuView.swift */; };
 		C5E7F02D579E7B34AD477CFD /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD35CA77AA99F4117B99EEC1 /* GameScene.swift */; };
+		D348ECC2FCADD2BE37CDBBA5 /* WinOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6F2782DBBE55559A80F7F1 /* WinOverlayView.swift */; };
 		D768C4862956D247857AAB12 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6685707BB133EA55AC619473 /* Assets.xcassets */; };
 		D8CB51098CF48DF86C18C34A /* level_010.json in Resources */ = {isa = PBXBuildFile; fileRef = AAA75E072030FE13F7B9A469 /* level_010.json */; };
 		DB20F043EDA964AD82C7AFD0 /* CopyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA4B483A3C4E5773B2DD8D0 /* CopyModel.swift */; };
@@ -96,12 +100,15 @@
 		01E871EB42C4C0246173C553 /* level_001.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = level_001.json; sourceTree = "<group>"; };
 		02AB0155E79F8F14212282CA /* level_002.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = level_002.json; sourceTree = "<group>"; };
 		03C8186A11CBEA9447CEBA3E /* LevelSolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelSolverTests.swift; sourceTree = "<group>"; };
+		0AE42072D97A022D8744959E /* FailOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailOverlayView.swift; sourceTree = "<group>"; };
 		0B2173138C2C313BEBDB054B /* Shuriken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shuriken.swift; sourceTree = "<group>"; };
 		135562D7B8D6846552C11224 /* BankingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankingTests.swift; sourceTree = "<group>"; };
 		184016EDB61E45DF58CD0D2E /* GameSceneCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSceneCoordinator.swift; sourceTree = "<group>"; };
 		1A5CAC8EEECDDBFF44547AAE /* PlaceholderAssets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderAssets.swift; sourceTree = "<group>"; };
 		1C7F73C31A0795749A83E13B /* LevelDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelDataTests.swift; sourceTree = "<group>"; };
+		24B7E78710C23AC3D91620F7 /* PauseMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseMenuView.swift; sourceTree = "<group>"; };
 		2555987373BAB7D2F129A259 /* level_007.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = level_007.json; sourceTree = "<group>"; };
+		26D93DA4ADD552CBD7820057 /* CheckpointTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckpointTests.swift; sourceTree = "<group>"; };
 		2754E62DE48BB819E167C7B5 /* BoundarySlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoundarySlot.swift; sourceTree = "<group>"; };
 		325A085108151FF2F6317825 /* LevelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelData.swift; sourceTree = "<group>"; };
 		330A8441D5E9A91F8D270BB9 /* level_009.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = level_009.json; sourceTree = "<group>"; };
@@ -165,6 +172,7 @@
 		EB92DBE610B286AB33BBF674 /* SpawnStripNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpawnStripNode.swift; sourceTree = "<group>"; };
 		EC3D14196FE273B0B79AE14F /* InputRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputRecorder.swift; sourceTree = "<group>"; };
 		EC5F2B8D46918DC3A2CF39D7 /* FailReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailReason.swift; sourceTree = "<group>"; };
+		EE6F2782DBBE55559A80F7F1 /* WinOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WinOverlayView.swift; sourceTree = "<group>"; };
 		EF52882FC99CABD851F805BD /* ParticleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticleFactory.swift; sourceTree = "<group>"; };
 		F1828AFBE324E65FF3F2120F /* GameSimulation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSimulation.swift; sourceTree = "<group>"; };
 		F43C79B809E554BC651CF704 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
@@ -182,9 +190,12 @@
 		34590ABF41BBF1974FE1E5EA /* Play */ = {
 			isa = PBXGroup;
 			children = (
+				0AE42072D97A022D8744959E /* FailOverlayView.swift */,
 				A94F6867AB85AF836D6A2FC8 /* GameplayContainerView.swift */,
+				24B7E78710C23AC3D91620F7 /* PauseMenuView.swift */,
 				D4303F9680F63D8A5104B739 /* PlayHubView.swift */,
 				3ECED8188A02303A361E595D /* SettingsView.swift */,
+				EE6F2782DBBE55559A80F7F1 /* WinOverlayView.swift */,
 			);
 			path = Play;
 			sourceTree = "<group>";
@@ -302,6 +313,7 @@
 			isa = PBXGroup;
 			children = (
 				135562D7B8D6846552C11224 /* BankingTests.swift */,
+				26D93DA4ADD552CBD7820057 /* CheckpointTests.swift */,
 				C8B47C975C0ACD26A2C33B6F /* DeterminismTests.swift */,
 				97E74B23D8815560609AEB8E /* GateTests.swift */,
 				8D4E5AB1CA21499603DD5863 /* KitaQueueTests.swift */,
@@ -548,6 +560,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F12039CEA5A3C6DFDF823B5B /* BankingTests.swift in Sources */,
+				746F991A7BF6BA69C449DC7E /* CheckpointTests.swift in Sources */,
 				DB4ED357DB82400C364E53B9 /* DeterminismTests.swift in Sources */,
 				4D2D54A50BB0443E950B2DAD /* GateTests.swift in Sources */,
 				12DC8B004121003C21B6F83C /* KitaQueueTests.swift in Sources */,
@@ -570,6 +583,7 @@
 				DB20F043EDA964AD82C7AFD0 /* CopyModel.swift in Sources */,
 				148C4AC110BF9EA1AEC5B8B4 /* DailyStateModel.swift in Sources */,
 				B4399FF484AB614EB2CB6709 /* DailyView.swift in Sources */,
+				38D5314986A4EF8AC79865AC /* FailOverlayView.swift in Sources */,
 				61C16EF951ACC07DCD04DEE6 /* FailReason.swift in Sources */,
 				041075AE50C5921AD5BB50B4 /* GameConstants.swift in Sources */,
 				C5E7F02D579E7B34AD477CFD /* GameScene.swift in Sources */,
@@ -597,6 +611,7 @@
 				3A830A084EF24A409F6D91F8 /* OperatorManager.swift in Sources */,
 				32A44D5737EA8968259AF324 /* OperatorNode.swift in Sources */,
 				438FD202A6976327D9C57ACE /* ParticleFactory.swift in Sources */,
+				C19B791977FCDD766BF4450C /* PauseMenuView.swift in Sources */,
 				E79740A5C1CD54D6B4932A19 /* PersistenceService.swift in Sources */,
 				A188254DDD20D4292E6BAA0F /* PlaceholderAssets.swift in Sources */,
 				825112B425F0264713FFF53B /* PlayHubView.swift in Sources */,
@@ -614,6 +629,7 @@
 				87345BB798972E8EEFBEB47E /* StarCalculator.swift in Sources */,
 				21A7394E142AA3CA8AE6098F /* TutorialOverlayNode.swift in Sources */,
 				1C61A3AC7AB72605778AFECE /* UserSettings.swift in Sources */,
+				D348ECC2FCADD2BE37CDBBA5 /* WinOverlayView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

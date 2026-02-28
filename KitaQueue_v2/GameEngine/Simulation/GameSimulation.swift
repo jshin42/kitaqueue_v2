@@ -236,6 +236,13 @@ final class GameSimulation {
         pendingEvents.removeAll()
         checkpointManager.clear()
     }
+
+    /// Restore state from checkpoint (Fix It resume)
+    func restoreState(_ newState: GameState) {
+        state = newState
+        accumulator = 0
+        pendingEvents.removeAll()
+    }
 }
 
 // MARK: - Simulation Events

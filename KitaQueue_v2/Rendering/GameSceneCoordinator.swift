@@ -110,6 +110,72 @@ final class GameSceneCoordinator {
         gamePhase = .playing
     }
 
+    // MARK: - Fix It Resume
+
+    func resumeFromFixIt() {
+        guard let sim = simulation,
+              let checkpoint = sim.checkpointManager.restoreCheckpoint()
+        else { return }
+
+        var restored = checkpoint
+
+        switch failReason {
+        case .overflow(let lane):
+            CheckpointManager.applyOverflowFix(&restored, lane: lane)
+        case .misbank:
+            CheckpointManager.applyMisbankFix(&restored)
+        case .none:
+            return
+        }
+
+        sim.restoreState(restored)
+
+        // Sync coordinator state
+        bankedCount = restored.bankedCount
+        operatorsUsed = restored.totalOperatorsPlaced
+        failReason = nil
+        nearMissBanked = nil
+        nearMissOverflowMargin = nil
+        gamePhase = .playing
+
+        // Refresh scene
+        scene?.clearDynamicNodes()
+        scene?.setupBoard()
+    }
+
+    // MARK: - Progression Save
+
+    func saveWinProgression() {
+        var progression = PersistenceService.shared.loadProgression()
+
+        // Update best stars
+        let previous = progression.bestStars[currentLevel] ?? 0
+        if starRating > previous {
+            progression.bestStars[currentLevel] = starRating
+        }
+
+        // Award coins and XP
+        let coins = StarCalculator.coins(stars: starRating)
+        let xp = StarCalculator.xp(stars: starRating)
+        progression.totalCoins += coins
+        progression.totalXP += xp
+
+        // Advance current level if this was the frontier
+        if currentLevel >= progression.currentLevel {
+            progression.currentLevel = currentLevel + 1
+            progression.completedLevels = max(progression.completedLevels, currentLevel)
+        }
+
+        // Milestone tokens: +1 every 10 levels completed
+        let prevMilestones = max(0, progression.completedLevels - 1) / GameConstants.levelsPerMilestoneToken
+        let newMilestones = progression.completedLevels / GameConstants.levelsPerMilestoneToken
+        if newMilestones > prevMilestones {
+            progression.totalTokens += (newMilestones - prevMilestones)
+        }
+
+        PersistenceService.shared.saveProgression(progression)
+    }
+
     // MARK: - Touch -> Operator Placement
 
     func attemptPlacement(row: Int, slot: BoundarySlot) {
