@@ -7,6 +7,7 @@ struct Shuriken: Identifiable, Hashable, Sendable {
     var progressY: Double // 0.0 = top (spawn), 1.0 = bottom (bank row)
     var isJammed: Bool = false
     var jammedAtRow: Int? = nil
+    var spawnIndex: Int = 0  // Global spawn index at time of creation (for toggle gates)
 
     /// Current row position (1-indexed, fractional)
     var currentRow: Double {

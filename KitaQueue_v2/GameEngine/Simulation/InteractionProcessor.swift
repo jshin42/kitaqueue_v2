@@ -101,7 +101,12 @@ struct InteractionProcessor: Sendable {
     private func applyToggleGate(gate: Gate, shurikenIndex: Int, state: inout GameState) -> [SimulationEvent] {
         guard let cycle = gate.colorCycle, !cycle.isEmpty else { return [] }
         let cycleN = gate.cycleEveryNSpawns ?? GameConstants.defaultToggleCycleEveryNSpawns
-        let colorIndex = (state.globalSpawnIndex / cycleN) % cycle.count
+        // Use per-gate encounter count so the gate actually cycles through colors
+        // as shuriken pass through it, regardless of global spawn timing.
+        let gateKey = "\(gate.lane)_\(gate.row)"
+        let encounters = state.gateEncounters[gateKey, default: 0]
+        state.gateEncounters[gateKey] = encounters + 1
+        let colorIndex = (encounters / cycleN) % cycle.count
         let allowedColor = cycle[colorIndex]
 
         if state.shuriken[shurikenIndex].color != allowedColor {

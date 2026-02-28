@@ -96,6 +96,15 @@ final class GameScene: SKScene {
             }
         }
 
+        // Gates (from level data)
+        if let gates = coordinator?.simulation?.levelData.gates {
+            for gate in gates {
+                let gateNode = GateNode(gate: gate, size: l.gateSize)
+                gateNode.position = l.gatePosition(lane: gate.lane, row: gate.row)
+                gateLayer.addChild(gateNode)
+            }
+        }
+
         // Banks (4)
         let bankColors: [UIColor] = [.systemRed, .systemGreen, .systemYellow, .systemBlue]
         for lane in 0..<LayoutCalculator.laneCount {
@@ -302,6 +311,17 @@ final class GameScene: SKScene {
                 node.showJammed()
                 break
             }
+        }
+
+        // Flash the gate that caused the jam
+        if let gateNode = gateLayer.childNode(withName: "gate_\(lane)_\(row)") as? GateNode {
+            gateNode.showBlockFlash()
+        }
+    }
+
+    func flashGatePaint(lane: Int, row: Int, toColor: ShurikenColor) {
+        if let gateNode = gateLayer.childNode(withName: "gate_\(lane)_\(row)") as? GateNode {
+            gateNode.showPaintFlash(toColor: toColor)
         }
     }
 

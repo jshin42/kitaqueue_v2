@@ -133,7 +133,8 @@ final class GameSimulation {
                 id: state.spawnedCount,
                 color: spawn.color,
                 lane: spawn.lane,
-                progressY: 0
+                progressY: 0,
+                spawnIndex: state.globalSpawnIndex
             )
             state.shuriken.append(shuriken)
             state.spawnedCount += 1

@@ -177,7 +177,7 @@ final class GameSceneCoordinator {
             HapticManager.shared.operatorTrigger()
             SoundManager.shared.playSlashTrigger()
 
-        case .gateTriggered(_, let lane, let row, let result):
+        case .gateTriggered(let gateType, let lane, let row, let result):
             switch result {
             case .jam:
                 scene?.jamShuriken(lane: lane, row: row)
@@ -193,6 +193,12 @@ final class GameSceneCoordinator {
                     scene?.showFailFlash()
                 }
             case .paint:
+                // Find the paint gate's toColor from level data
+                if let gate = simulation?.levelData.gates.first(where: {
+                    $0.type == .paint && $0.lane == lane && $0.row == row
+                }), let toColor = gate.toColor {
+                    scene?.flashGatePaint(lane: lane, row: row, toColor: toColor)
+                }
                 SoundManager.shared.playPaintConvert()
             case .pass:
                 break

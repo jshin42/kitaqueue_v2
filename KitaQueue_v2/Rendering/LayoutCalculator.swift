@@ -138,6 +138,17 @@ struct LayoutCalculator {
         CGSize(width: laneWidth * 0.4, height: rowHeight * 0.6)
     }
 
+    // MARK: - Gate Size
+
+    var gateSize: CGSize {
+        CGSize(width: laneWidth * 0.9, height: rowHeight * 0.3)
+    }
+
+    /// Position for a gate (centered in lane at row)
+    func gatePosition(lane: Int, row: Int) -> CGPoint {
+        CGPoint(x: laneX(lane), y: rowY(row))
+    }
+
     // MARK: - Ninja Position (decorative, left of board)
 
     var ninjaPosition: CGPoint {

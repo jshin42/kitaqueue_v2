@@ -25,6 +25,9 @@ struct GameState: Hashable, Sendable {
     // Jams
     var jamCounts: [Int: Int] = [:] // lane -> jam count
 
+    // Toggle gate encounter counters (key: "lane_row" -> count of shuriken that reached this gate)
+    var gateEncounters: [String: Int] = [:]
+
     // Fail
     var failReason: FailReason? = nil
 

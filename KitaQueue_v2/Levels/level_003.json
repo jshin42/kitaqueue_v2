@@ -1,0 +1,52 @@
+{
+  "id": 3,
+  "waves": [
+    [
+      {"lane": 0, "color": "red"},
+      {"lane": 1, "color": "red"},
+      {"lane": 2, "color": "yellow"},
+      {"lane": 3, "color": "blue"}
+    ],
+    [
+      {"lane": 0, "color": "red"},
+      {"lane": 1, "color": "red"},
+      {"lane": 2, "color": "yellow"},
+      {"lane": 3, "color": "blue"}
+    ],
+    [
+      {"lane": 0, "color": "green"},
+      {"lane": 1, "color": "green"},
+      {"lane": 2, "color": "yellow"},
+      {"lane": 3, "color": "blue"}
+    ],
+    [
+      {"lane": 0, "color": "green"},
+      {"lane": 1, "color": "green"},
+      {"lane": 2, "color": "yellow"},
+      {"lane": 3, "color": "blue"}
+    ],
+    [
+      {"lane": 0, "color": "red"},
+      {"lane": 1, "color": "green"},
+      {"lane": 2, "color": "yellow"},
+      {"lane": 3, "color": "blue"}
+    ],
+    [
+      {"lane": 0, "color": "red"},
+      {"lane": 1, "color": "green"},
+      {"lane": 2, "color": "yellow"},
+      {"lane": 3, "color": "blue"}
+    ]
+  ],
+  "gates": [
+    {"type": "color", "lane": 0, "row": 8, "allowedColor": "red"},
+    {"type": "color", "lane": 1, "row": 8, "allowedColor": "green"}
+  ],
+  "threeStarMaxOps": 6,
+  "twoStarMaxOps": 8,
+  "tutorialConfig": {
+    "overlayText": "Each slash handles 3 shuriken, then fades.",
+    "endCardText": "Plan your slashes carefully.",
+    "pauseBeforeFirstSpawn": true
+  }
+}
