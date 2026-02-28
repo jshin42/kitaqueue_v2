@@ -3,6 +3,7 @@ import SwiftUI
 struct FailOverlayView: View {
     let coordinator: GameSceneCoordinator
     let appState: AppState
+    let showFixIt: Bool
     let onRetry: () -> Void
     let onFixIt: () -> Void
     let onHome: () -> Void
@@ -13,7 +14,6 @@ struct FailOverlayView: View {
     private var bankedCount: Int { coordinator.bankedCount }
     private var totalShuriken: Int { coordinator.totalShuriken }
     private var attemptNumber: Int { coordinator.attemptNumber }
-    private var overflowMargin: Int? { coordinator.nearMissOverflowMargin }
     private var currentLevel: Int { coordinator.currentLevel }
 
     private var isOverflow: Bool {
@@ -31,19 +31,6 @@ struct FailOverlayView: View {
         } else {
             let remaining = totalShuriken - bankedCount
             return CopyModel.misbankNearMiss(remaining: remaining)
-        }
-    }
-
-    private var canShowFixIt: Bool {
-        // Fix It qualification: remainingToBank <= 3 OR overflowMargin == 1
-        // Cap: 1 per attempt (first fail triggers overlay, so always first), 3 per session
-        guard appState.sessionFixItCount < GameConstants.fixItMaxPerSession else { return false }
-
-        if isOverflow {
-            return true // Overflow always qualifies (margin was exactly 0 → was 1 before failing)
-        } else {
-            let remaining = totalShuriken - bankedCount
-            return remaining <= 3
         }
     }
 
@@ -102,7 +89,7 @@ struct FailOverlayView: View {
                     }
 
                     // Fix It button (conditional)
-                    if canShowFixIt {
+                    if showFixIt {
                         Button {
                             SoundManager.shared.playButtonTap()
                             onFixIt()
@@ -112,8 +99,7 @@ struct FailOverlayView: View {
                                     .font(.system(size: 14))
                                 Text(isOverflow ? CopyModel.fixItOverflow : CopyModel.fixItMisbank)
                                     .font(.system(size: 16, weight: .bold, design: .rounded))
-                                if currentLevel > GameConstants.fixItFreeUntilLevel {
-                                    // Show "ad" indicator after FTUE
+                                if AdPolicy.fixItRequiresAd(level: currentLevel) {
                                     Image(systemName: "play.rectangle.fill")
                                         .font(.system(size: 12))
                                 }

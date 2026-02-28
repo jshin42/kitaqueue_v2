@@ -7,6 +7,11 @@ struct GameplayContainerView: View {
     let appState: AppState
     @State private var coordinator = GameSceneCoordinator()
     @State private var transitioning = false
+    @State private var fixItUsedThisAttempt = 0
+
+    private var adsRemoved: Bool {
+        PersistenceService.shared.loadSettings().adsRemoved
+    }
 
     var body: some View {
         GeometryReader { geo in
@@ -60,12 +65,16 @@ struct GameplayContainerView: View {
                         onNext: {
                             coordinator.saveWinProgression()
                             appState.sessionWinCount += 1
-                            transitionToNextLevel()
+                            handlePostWinAd {
+                                transitionToNextLevel()
+                            }
                         },
                         onHome: {
                             coordinator.saveWinProgression()
                             appState.sessionWinCount += 1
-                            appState.navigationPath.removeAll()
+                            handlePostWinAd {
+                                appState.navigationPath.removeAll()
+                            }
                         }
                     )
                     .transition(.opacity)
@@ -76,17 +85,24 @@ struct GameplayContainerView: View {
                     FailOverlayView(
                         coordinator: coordinator,
                         appState: appState,
+                        showFixIt: canShowFixIt,
                         onRetry: {
                             appState.sessionFailCount += 1
-                            coordinator.retry()
+                            let fixItWasShown = canShowFixIt
+                            handlePostFailAd(fixItShown: fixItWasShown) {
+                                fixItUsedThisAttempt = 0
+                                coordinator.retry()
+                            }
                         },
                         onFixIt: {
-                            appState.sessionFixItCount += 1
-                            coordinator.resumeFromFixIt()
+                            handleFixIt()
                         },
                         onHome: {
                             appState.sessionFailCount += 1
-                            appState.navigationPath.removeAll()
+                            let fixItWasShown = canShowFixIt
+                            handlePostFailAd(fixItShown: fixItWasShown) {
+                                appState.navigationPath.removeAll()
+                            }
                         }
                     )
                     .transition(.opacity)
@@ -99,6 +115,7 @@ struct GameplayContainerView: View {
                             coordinator.resumeGame()
                         },
                         onRestart: {
+                            fixItUsedThisAttempt = 0
                             coordinator.retry()
                         },
                         onQuit: {
@@ -121,11 +138,69 @@ struct GameplayContainerView: View {
         .navigationBarBackButtonHidden(true)
         .onAppear {
             coordinator.startLevel(id: levelId)
+            Task { await AdManager.shared.preloadAds() }
         }
+    }
+
+    // MARK: - Fix It Qualification (mirrors FailOverlayView logic)
+
+    private var canShowFixIt: Bool {
+        guard appState.sessionFixItCount < GameConstants.fixItMaxPerSession else { return false }
+        guard fixItUsedThisAttempt < GameConstants.fixItMaxPerAttempt else { return false }
+        if case .overflow = coordinator.failReason { return true }
+        let remaining = coordinator.totalShuriken - coordinator.bankedCount
+        return remaining <= 3
+    }
+
+    // MARK: - Ad Flows
+
+    private func handlePostWinAd(then action: @escaping () -> Void) {
+        Task {
+            _ = await AdManager.shared.handlePostWin(
+                winCount: appState.sessionWinCount,
+                level: coordinator.currentLevel,
+                adsRemoved: adsRemoved
+            )
+            action()
+        }
+    }
+
+    private func handlePostFailAd(fixItShown: Bool, then action: @escaping () -> Void) {
+        Task {
+            _ = await AdManager.shared.handlePostFail(
+                failCount: appState.sessionFailCount,
+                level: coordinator.currentLevel,
+                adsRemoved: adsRemoved,
+                fixItShown: fixItShown
+            )
+            action()
+        }
+    }
+
+    private func handleFixIt() {
+        let requiresAd = AdPolicy.fixItRequiresAd(level: coordinator.currentLevel)
+
+        if requiresAd {
+            Task {
+                let earned = await AdManager.shared.showRewardedForFixIt()
+                if earned {
+                    applyFixIt()
+                }
+            }
+        } else {
+            applyFixIt()
+        }
+    }
+
+    private func applyFixIt() {
+        fixItUsedThisAttempt += 1
+        appState.sessionFixItCount += 1
+        coordinator.resumeFromFixIt()
     }
 
     private func transitionToNextLevel() {
         transitioning = true
+        fixItUsedThisAttempt = 0
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             coordinator.nextLevel()
             transitioning = false
