@@ -1,0 +1,49 @@
+{
+  "id": 1,
+  "waves": [
+    [
+      {"lane": 0, "color": "red"},
+      {"lane": 1, "color": "green"},
+      {"lane": 2, "color": "yellow"},
+      {"lane": 3, "color": "blue"}
+    ],
+    [
+      {"lane": 0, "color": "red"},
+      {"lane": 1, "color": "green"},
+      {"lane": 2, "color": "yellow"},
+      {"lane": 3, "color": "blue"}
+    ],
+    [
+      {"lane": 0, "color": "red"},
+      {"lane": 1, "color": "green"},
+      {"lane": 2, "color": "yellow"},
+      {"lane": 3, "color": "blue"}
+    ],
+    [
+      {"lane": 0, "color": "red"},
+      {"lane": 1, "color": "green"},
+      {"lane": 2, "color": "yellow"},
+      {"lane": 3, "color": "blue"}
+    ],
+    [
+      {"lane": 0, "color": "red"},
+      {"lane": 1, "color": "green"},
+      {"lane": 2, "color": "yellow"},
+      {"lane": 3, "color": "blue"}
+    ],
+    [
+      {"lane": 0, "color": "red"},
+      {"lane": 1, "color": "green"},
+      {"lane": 2, "color": "yellow"},
+      {"lane": 3, "color": "blue"}
+    ]
+  ],
+  "gates": [],
+  "threeStarMaxOps": 6,
+  "twoStarMaxOps": 8,
+  "tutorialConfig": {
+    "overlayText": "Match color to bank.",
+    "endCardText": "Slashes reroute. Banking is the goal.",
+    "pauseBeforeFirstSpawn": false
+  }
+}

@@ -16,9 +16,7 @@ settings:
     SWIFT_STRICT_CONCURRENCY: complete
   configs:
     Debug:
-      CODE_SIGN_IDENTITY: ""
-      CODE_SIGNING_REQUIRED: "NO"
-      CODE_SIGNING_ALLOWED: "NO"
+      CODE_SIGN_IDENTITY: "-"
 
 targets:
   KitaQueue_v2:
@@ -74,5 +72,6 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.kitaqueue.slidinggates.tests
+        GENERATE_INFOPLIST_FILE: "YES"
         TEST_HOST: "$(BUILT_PRODUCTS_DIR)/KitaQueue_v2.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/KitaQueue_v2"
         BUNDLE_LOADER: "$(TEST_HOST)"
