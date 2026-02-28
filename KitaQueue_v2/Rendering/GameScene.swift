@@ -325,6 +325,12 @@ final class GameScene: SKScene {
         }
     }
 
+    func updateToggleGateIndicator(lane: Int, row: Int, color: ShurikenColor) {
+        if let gateNode = gateLayer.childNode(withName: "gate_\(lane)_\(row)") as? GateNode {
+            gateNode.updateAllowedColor(color)
+        }
+    }
+
     // MARK: - Operator Nodes
 
     func addOperatorNode(id: Int, row: Int, slot: BoundarySlot, position: CGPoint, size: CGSize) {

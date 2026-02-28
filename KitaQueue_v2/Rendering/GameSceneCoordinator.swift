@@ -143,6 +143,19 @@ final class GameSceneCoordinator {
         simulation?.canPlaceOperator(row: row, slot: slot) ?? false
     }
 
+    /// Update toggle gate visual indicator to show the current allowed color
+    private func updateToggleGateIndicator(lane: Int, row: Int) {
+        guard let sim = simulation,
+              let gate = sim.levelData.gates.first(where: { $0.type == .toggle && $0.lane == lane && $0.row == row })
+        else { return }
+
+        let gateKey = "\(lane)_\(row)"
+        let encounters = sim.state.gateEncounters[gateKey, default: 0]
+        if let color = GateProcessor.toggleAllowedColor(gate: gate, encounterCount: encounters) {
+            scene?.updateToggleGateIndicator(lane: lane, row: row, color: color)
+        }
+    }
+
     // MARK: - Event Processing (called from GameScene.update on main thread)
 
     func processEvents(_ events: [SimulationEvent]) {
@@ -201,7 +214,14 @@ final class GameSceneCoordinator {
                 }
                 SoundManager.shared.playPaintConvert()
             case .pass:
-                break
+                // Update toggle gate visual indicator after each encounter
+                if gateType == .toggle {
+                    updateToggleGateIndicator(lane: lane, row: row)
+                }
+            }
+            // Also update toggle indicator after jam
+            if gateType == .toggle && result == .jam {
+                updateToggleGateIndicator(lane: lane, row: row)
             }
 
         case .levelWon(let ops, _):

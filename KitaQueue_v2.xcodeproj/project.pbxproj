@@ -40,6 +40,7 @@
 		5582AE11C19A80A71F478065 /* BankNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2DCE3A706E78D0E8B6556ED /* BankNode.swift */; };
 		55D5DCD7E3880970AA71FF3D /* Shell.atlas in Resources */ = {isa = PBXBuildFile; fileRef = FEAA34B2BA98856DE8230922 /* Shell.atlas */; };
 		5623F9B5C3283FB0F285B773 /* level_001.json in Resources */ = {isa = PBXBuildFile; fileRef = 01E871EB42C4C0246173C553 /* level_001.json */; };
+		58AECF7F49A806C5A80A6ABB /* level_005.json in Resources */ = {isa = PBXBuildFile; fileRef = BB33CD86904B8ABBC7CB2459 /* level_005.json */; };
 		5A7CBE5B7B27E45A3CFC0F9D /* GateProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34941E2150B068C5B0573B33 /* GateProcessor.swift */; };
 		5D879D6D436E2878838320AE /* level_003.json in Resources */ = {isa = PBXBuildFile; fileRef = 9E98DB7EC6EB4D0C51D1C379 /* level_003.json */; };
 		601E4795B273F2095D6D5871 /* HUDNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CFBD2FBB1207F566FB5FA6 /* HUDNode.swift */; };
@@ -68,6 +69,7 @@
 		ECD6C4117C69EB666838ED98 /* Shuriken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2173138C2C313BEBDB054B /* Shuriken.swift */; };
 		ED34836198B5B647C64F205D /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F3B1A1B63B2578027ED504 /* SoundManager.swift */; };
 		F12039CEA5A3C6DFDF823B5B /* BankingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135562D7B8D6846552C11224 /* BankingTests.swift */; };
+		F74BD85C1D7994E47688D0A0 /* level_004.json in Resources */ = {isa = PBXBuildFile; fileRef = 78603F7D5A4C3DBE387E31CB /* level_004.json */; };
 		F94DE0C173743E6B2E6DC8BF /* NinjaNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AF6C9F812AB3AF43EF7B29 /* NinjaNode.swift */; };
 		FB5C6185F473E62A8857BC3F /* KitaQueueApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E63F4D7449FCF1295F075F9 /* KitaQueueApp.swift */; };
 /* End PBXBuildFile section */
@@ -105,6 +107,7 @@
 		65EF3B30E20226808C690560 /* GhostPreviewNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GhostPreviewNode.swift; sourceTree = "<group>"; };
 		6685707BB133EA55AC619473 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		66D3269B3265E420CCAADE2D /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		78603F7D5A4C3DBE387E31CB /* level_004.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = level_004.json; sourceTree = "<group>"; };
 		7D4096F4EC4C0BEB7F579250 /* InteractionProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionProcessor.swift; sourceTree = "<group>"; };
 		83AF6C9F812AB3AF43EF7B29 /* NinjaNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NinjaNode.swift; sourceTree = "<group>"; };
 		86A55DBCED0B248C42EF1650 /* KitaQueue_v2Tests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = KitaQueue_v2Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -126,6 +129,7 @@
 		B4A74C10B5D44B5426AF2088 /* ShurikenNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShurikenNode.swift; sourceTree = "<group>"; };
 		B747D9FE131179F522E9831E /* Gameplay.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Gameplay.atlas; sourceTree = "<group>"; };
 		BAF6EBB8129BE097B95EB3C6 /* BankValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankValidator.swift; sourceTree = "<group>"; };
+		BB33CD86904B8ABBC7CB2459 /* level_005.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = level_005.json; sourceTree = "<group>"; };
 		BE4987BB959DE500D8690D10 /* GameConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameConstants.swift; sourceTree = "<group>"; };
 		C22ADB2D94FE03315568C4B8 /* GateNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GateNode.swift; sourceTree = "<group>"; };
 		C2DCE3A706E78D0E8B6556ED /* BankNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankNode.swift; sourceTree = "<group>"; };
@@ -334,6 +338,8 @@
 				01E871EB42C4C0246173C553 /* level_001.json */,
 				02AB0155E79F8F14212282CA /* level_002.json */,
 				9E98DB7EC6EB4D0C51D1C379 /* level_003.json */,
+				78603F7D5A4C3DBE387E31CB /* level_004.json */,
+				BB33CD86904B8ABBC7CB2459 /* level_005.json */,
 				54A77DA33EF44B5FEB29DD63 /* LevelLoader.swift */,
 			);
 			path = Levels;
@@ -500,6 +506,8 @@
 				5623F9B5C3283FB0F285B773 /* level_001.json in Resources */,
 				B9EAF433AE0B71173E607488 /* level_002.json in Resources */,
 				5D879D6D436E2878838320AE /* level_003.json in Resources */,
+				F74BD85C1D7994E47688D0A0 /* level_004.json in Resources */,
+				58AECF7F49A806C5A80A6ABB /* level_005.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

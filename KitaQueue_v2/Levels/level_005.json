@@ -1,0 +1,51 @@
+{
+  "id": 5,
+  "waves": [
+    [
+      {"lane": 0, "color": "red"},
+      {"lane": 1, "color": "red"},
+      {"lane": 2, "color": "yellow"},
+      {"lane": 3, "color": "blue"}
+    ],
+    [
+      {"lane": 0, "color": "red"},
+      {"lane": 1, "color": "red"},
+      {"lane": 2, "color": "yellow"},
+      {"lane": 3, "color": "blue"}
+    ],
+    [
+      {"lane": 0, "color": "red"},
+      {"lane": 1, "color": "red"},
+      {"lane": 2, "color": "yellow"},
+      {"lane": 3, "color": "blue"}
+    ],
+    [
+      {"lane": 0, "color": "red"},
+      {"lane": 1, "color": "green"},
+      {"lane": 2, "color": "yellow"},
+      {"lane": 3, "color": "blue"}
+    ],
+    [
+      {"lane": 0, "color": "red"},
+      {"lane": 1, "color": "green"},
+      {"lane": 2, "color": "yellow"},
+      {"lane": 3, "color": "blue"}
+    ],
+    [
+      {"lane": 0, "color": "red"},
+      {"lane": 1, "color": "green"},
+      {"lane": 2, "color": "yellow"},
+      {"lane": 3, "color": "blue"}
+    ]
+  ],
+  "gates": [
+    {"type": "color", "lane": 1, "row": 6, "allowedColor": "green"}
+  ],
+  "threeStarMaxOps": 6,
+  "twoStarMaxOps": 8,
+  "tutorialConfig": {
+    "overlayText": "3 jams in one lane = overflow!",
+    "endCardText": "Keep lanes clear to survive.",
+    "pauseBeforeFirstSpawn": false
+  }
+}
