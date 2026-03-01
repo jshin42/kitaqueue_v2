@@ -138,7 +138,11 @@ struct GameplayContainerView: View {
         .navigationBarBackButtonHidden(true)
         .onAppear {
             coordinator.startLevel(id: levelId)
+            SoundManager.shared.startGameplayMusic()
             Task { await AdManager.shared.preloadAds() }
+        }
+        .onDisappear {
+            SoundManager.shared.startMenuMusic()
         }
     }
 

@@ -34,5 +34,8 @@ struct RootTabView: View {
                 .tag(AppState.Tab.shop)
         }
         .tint(.orange)
+        .onAppear {
+            SoundManager.shared.startMenuMusic()
+        }
     }
 }

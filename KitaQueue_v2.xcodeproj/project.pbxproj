@@ -73,6 +73,7 @@
 		9E777D35DEEA0663C4B0A4A5 /* TelemetryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A100F7F129CA59CB4B7F3AC5 /* TelemetryTests.swift */; };
 		A09CE8DEE29D850B9B14C8C7 /* PlayerProgression.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D8D43D78EE02C6C5415D8 /* PlayerProgression.swift */; };
 		A188254DDD20D4292E6BAA0F /* PlaceholderAssets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5CAC8EEECDDBFF44547AAE /* PlaceholderAssets.swift */; };
+		A35494F2414A003CFB785289 /* AdMobProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28EF48CCE214589B652198B /* AdMobProvider.swift */; };
 		A519B8CB2F782D0FA8632474 /* SpawnManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DE3D33EA94593F9FE945D7 /* SpawnManager.swift */; };
 		AD9700C912AB9C9151557F8D /* LevelDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7F73C31A0795749A83E13B /* LevelDataTests.swift */; };
 		B33F08240789ED20D7EC1142 /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94EB9DE96CA5DFAA9EA4512 /* ShopView.swift */; };
@@ -167,6 +168,7 @@
 		AD35CA77AA99F4117B99EEC1 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		B01241E800483E295CB0A2FA /* ProductCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCardView.swift; sourceTree = "<group>"; };
 		B13052B006D8DAF8D8A6C5AB /* LayoutCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutCalculator.swift; sourceTree = "<group>"; };
+		B28EF48CCE214589B652198B /* AdMobProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdMobProvider.swift; sourceTree = "<group>"; };
 		B44EF78DCDDEF0E1AA50C57B /* CheckpointManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckpointManager.swift; sourceTree = "<group>"; };
 		B4A74C10B5D44B5426AF2088 /* ShurikenNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShurikenNode.swift; sourceTree = "<group>"; };
 		B747D9FE131179F522E9831E /* Gameplay.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Gameplay.atlas; sourceTree = "<group>"; };
@@ -459,6 +461,7 @@
 			isa = PBXGroup;
 			children = (
 				C99E0D703413173F1B834B48 /* AdManager.swift */,
+				B28EF48CCE214589B652198B /* AdMobProvider.swift */,
 				62A6394194A51A84D9D75E27 /* AdPolicy.swift */,
 				27BD0A78B2AFF560ABDC40F1 /* AdProviding.swift */,
 				F910F956C587EB1B7E393297 /* StubAdProvider.swift */,
@@ -614,6 +617,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7047DC0871D790F9E86555CB /* AdManager.swift in Sources */,
+				A35494F2414A003CFB785289 /* AdMobProvider.swift in Sources */,
 				998B67A13667A9D17DA08888 /* AdPolicy.swift in Sources */,
 				65DD18C3624B6BDE076A4ED6 /* AdProviding.swift in Sources */,
 				3D0BBDADD6395B28A9B1EFDE /* AppState.swift in Sources */,

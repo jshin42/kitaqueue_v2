@@ -1,6 +1,8 @@
 import AVFoundation
 
-/// Manages sound effects and music playback. Uses system sounds as placeholders.
+/// Manages sound effects and music playback.
+/// SFX: system sounds as placeholders (replace with bundled audio when available).
+/// Music: loops gameplay/menu tracks when present in bundle; silence otherwise.
 @MainActor
 final class SoundManager {
     static let shared = SoundManager()
@@ -9,9 +11,10 @@ final class SoundManager {
     var isMusicEnabled: Bool = true
 
     private var musicPlayer: AVAudioPlayer?
+    private var currentMusicTrack: String?
 
     private init() {
-        // Configure audio session for game
+        // Configure audio session for game (mix with other audio)
         try? AVAudioSession.sharedInstance().setCategory(.ambient, mode: .default)
         try? AVAudioSession.sharedInstance().setActive(true)
     }
@@ -63,20 +66,56 @@ final class SoundManager {
         AudioServicesPlaySystemSound(1104) // Tock
     }
 
-    // MARK: - Music (placeholder: no-op until M15)
+    // MARK: - Music
 
     func startGameplayMusic() {
-        guard isMusicEnabled else { return }
-        // Will load music/gameplay_loop.m4a in M15
+        playMusic(named: "gameplay_loop")
     }
 
     func startMenuMusic() {
-        guard isMusicEnabled else { return }
-        // Will load music/menu_loop.m4a in M15
+        playMusic(named: "menu_loop")
     }
 
     func stopMusic() {
         musicPlayer?.stop()
         musicPlayer = nil
+        currentMusicTrack = nil
+    }
+
+    func updateMusicEnabled(_ enabled: Bool) {
+        isMusicEnabled = enabled
+        if !enabled {
+            stopMusic()
+        }
+    }
+
+    private func playMusic(named name: String) {
+        guard isMusicEnabled else { return }
+        guard currentMusicTrack != name else { return } // Already playing
+
+        stopMusic()
+
+        // Try to load from Sounds/ directory in bundle
+        guard let url = Bundle.main.url(forResource: name, withExtension: "m4a", subdirectory: "Sounds")
+                ?? Bundle.main.url(forResource: name, withExtension: "mp3", subdirectory: "Sounds")
+                ?? Bundle.main.url(forResource: name, withExtension: "m4a")
+                ?? Bundle.main.url(forResource: name, withExtension: "mp3")
+        else {
+            // No music file available — silent placeholder
+            currentMusicTrack = name
+            return
+        }
+
+        do {
+            let player = try AVAudioPlayer(contentsOf: url)
+            player.numberOfLoops = -1 // Loop forever
+            player.volume = 0.3
+            player.prepareToPlay()
+            player.play()
+            musicPlayer = player
+            currentMusicTrack = name
+        } catch {
+            currentMusicTrack = name
+        }
     }
 }

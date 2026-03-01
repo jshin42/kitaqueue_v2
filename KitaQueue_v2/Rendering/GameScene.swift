@@ -344,6 +344,9 @@ final class GameScene: SKScene {
             .fadeIn(withDuration: 0.15),
             .scale(to: 1.0, duration: 0.15)
         ]))
+
+        // Camera nudge on placement
+        ParticleFactory.cameraNudge(scene: self)
     }
 
     func removeLastOperatorNode() {
@@ -361,6 +364,15 @@ final class GameScene: SKScene {
 
         let spark = ParticleFactory.sparkHit(at: node.position, color: .cyan)
         overlayLayer.addChild(spark)
+
+        // Slash trail along deflection path
+        let l = layout
+        let leftLane = slot.adjacentLanes.left
+        let rightLane = slot.adjacentLanes.right
+        let trailStart = CGPoint(x: l.laneX(leftLane), y: node.position.y)
+        let trailEnd = CGPoint(x: l.laneX(rightLane), y: node.position.y)
+        let trail = ParticleFactory.slashTrail(from: trailStart, to: trailEnd, color: .cyan)
+        overlayLayer.addChild(trail)
 
         if remainingCharges <= 0 {
             node.animateRemoval()
